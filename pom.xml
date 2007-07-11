@@ -14,4 +14,18 @@
   <name>JBoss Transaction 5.0.0 SPI</name>
   <url>http://www.jboss.org</url>
   <description>The Java Transaction 5.0.0 SPI classes</description>
+    <dependencies>
+      <dependency>
+        <groupId>jboss</groupId>
+        <artifactId>jboss-common-core</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>jboss</groupId>
+        <artifactId>jboss-jca-api</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>jboss</groupId>
+        <artifactId>jboss-transaction-api</artifactId>
+      </dependency>
+    </dependencies>
 </project>
