@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src/main"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-   <classpathentry kind="var" path="M2_REPO/jboss/jboss-common-logging-spi/2.0.4.GA/jboss-common-logging-spi-2.0.4.GA.jar"/>
-	<classpathentry kind="lib" path="/home/ejort/.m2/repository/jboss/jboss-jca-api/1.5-SNAPSHOT/jboss-jca-api-1.5-SNAPSHOT.jar" sourcepath="/home/ejort/.m2/repository/jboss/jboss-jca-api/1.5-SNAPSHOT/jboss-jca-api-1.5-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="/home/ejort/.m2/repository/jboss/jboss-transaction-api/1.0.1-SNAPSHOT/jboss-transaction-api-1.0.1-SNAPSHOT.jar" sourcepath="/home/ejort/.m2/repository/jboss/jboss-transaction-api/1.0.1-SNAPSHOT/jboss-transaction-api-1.0.1-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/jboss/jboss-common-logging-spi/2.0.4.GA/jboss-common-logging-spi-2.0.4.GA.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/jboss/javaee/jboss-transaction-api/1.0.1/jboss-transaction-api-1.0.1.jar" sourcepath="/M2_REPO/org/jboss/javaee/jboss-transaction-api/1.0.1/jboss-transaction-api-1.0.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/jboss/javaee/jboss-jca-api/1.5/jboss-jca-api-1.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
