@@ -35,11 +35,11 @@ import javax.transaction.TransactionManager;
  * @author adrian@jboss.org
  * @version $Revision: 37459 $
  */
-public class TransactionLocal 
+public class TransactionLocal
 {
 
    /**
-    * To simplify null values handling in the preloaded data pool we use 
+    * To simplify null values handling in the preloaded data pool we use
     * this value instead of 'null'
     */
    private static final Object NULL_VALUE = new Object();
@@ -80,9 +80,9 @@ public class TransactionLocal
 
    /**
     * Lock the TransactionLocal using the current transaction<p>
-    * 
+    *
     * WARN: The current implemention just "locks the transactions"
-    * 
+    *
     * @throws IllegalStateException if the transaction is not active
     * @throws InterruptedException if the thread is interrupted
     */
@@ -90,12 +90,12 @@ public class TransactionLocal
    {
       lock(getTransaction());
    }
-      
+
    /**
     * Lock the TransactionLocal using the provided transaction<p>
-    * 
+    *
     * WARN: The current implemention just "locks the transactions"
-    * 
+    *
     * @param transaction the transaction
     * @throws IllegalStateException if the transaction is not active
     * @throws InterruptedException if the thread is interrupted
@@ -105,7 +105,7 @@ public class TransactionLocal
       // ignore when there is no transaction
       if (transaction == null)
          return;
-      
+
       delegate.lock(this, transaction);
    }
 
@@ -116,10 +116,10 @@ public class TransactionLocal
    {
       unlock(getTransaction());
    }
-   
+
    /**
     * Unlock the ThreadLocal using the provided transaction
-    * 
+    *
     * @param transaction the transaction
     */
    public void unlock(Transaction transaction)
@@ -132,18 +132,18 @@ public class TransactionLocal
    }
 
    /**
-    * Returns the initial value for this thransaction local.  This method 
+    * Returns the initial value for this thransaction local.  This method
     * will be called once per accessing transaction for each TransactionLocal,
-    * the first time each transaction accesses the variable with get or set. 
-    * If the programmer desires TransactionLocal variables to be initialized to 
+    * the first time each transaction accesses the variable with get or set.
+    * If the programmer desires TransactionLocal variables to be initialized to
     * some value other than null, TransactionLocal must be subclassed, and this
-    * method overridden. Typically, an anonymous inner class will be used. 
-    * Typical implementations of initialValue will call an appropriate 
+    * method overridden. Typically, an anonymous inner class will be used.
+    * Typical implementations of initialValue will call an appropriate
     * constructor and return the newly constructed object.
     *
     * @return the initial value for this TransactionLocal
     */
-   protected Object initialValue() 
+   protected Object initialValue()
    {
       return null;
    }
@@ -151,7 +151,7 @@ public class TransactionLocal
 
    /**
     * get the transaction local value.
-    * 
+    *
     * @param tx the transaction
     * @return the obejct
     */
@@ -162,18 +162,18 @@ public class TransactionLocal
 
    /**
     * put the value in the TransactionImpl map
-    * 
+    *
     * @param tx the transaction
     * @param value the value
     */
    protected void storeValue(Transaction tx, Object value)
-   {   
+   {
       delegate.storeValue(this, tx, value);
    }
 
    /**
     * does Transaction contain object?
-    * 
+    *
     * @param tx the transaction
     * @return true if it has an object
     */
@@ -196,11 +196,11 @@ public class TransactionLocal
 
 
    /**
-    * Returns the value of this TransactionLocal variable associated with the 
-    * specified transaction. Creates and initializes the copy if this is the 
+    * Returns the value of this TransactionLocal variable associated with the
+    * specified transaction. Creates and initializes the copy if this is the
     * first time the method is called in a transaction.
     *
-    * @param transaction the transaction for which the variable it to 
+    * @param transaction the transaction for which the variable it to
     * be retrieved
     * @return the value of this TransactionLocal
     * @throws IllegalStateException if an error occures while registering
@@ -217,7 +217,7 @@ public class TransactionLocal
       {
          // get the initial value
          value = initialValue();
-         
+
          // if value is null replace it with the null value standin
          if(value == null)
          {
@@ -225,7 +225,18 @@ public class TransactionLocal
          }
 
          // store the value
-         storeValue(transaction, value);
+         try
+         {
+            storeValue(transaction, value);
+         }
+         catch(IllegalStateException e)
+         {
+            // depending on the delegate implementation it may be considered an error to
+            // call storeValue after the tx has ended. Further, the tx ending may have
+            // caused the disposal of a previously stored initial value.
+            // for user convenience we ignore such errors and return the initialvalue here.
+            return initialValue();
+         }
       }
 
       // if the value is the null standin return null
@@ -239,12 +250,12 @@ public class TransactionLocal
    }
 
    /**
-    * Sets the value of this TransactionLocal variable associtated with the 
+    * Sets the value of this TransactionLocal variable associtated with the
     * thread context transaction. This is only used to change the value from
-    * the one assigned by the initialValue method, and many applications will 
+    * the one assigned by the initialValue method, and many applications will
     * have no need for this functionality.
     *
-    * @param value the value to be associated with the thread context 
+    * @param value the value to be associated with the thread context
     * transactions's TransactionLocal
     */
    public void set(Object value)
@@ -253,20 +264,20 @@ public class TransactionLocal
    }
 
    /**
-    * Sets the value of this TransactionLocal variable associtated with the 
+    * Sets the value of this TransactionLocal variable associtated with the
     * specified transaction. This is only used to change the value from
-    * the one assigned by the initialValue method, and many applications will 
+    * the one assigned by the initialValue method, and many applications will
     * have no need for this functionality.
     *
     * @param transaction the transaction for which the value will be set
-    * @param value the value to be associated with the thread context 
+    * @param value the value to be associated with the thread context
     * transactions's TransactionLocal
     */
    public void set(Transaction transaction, Object value)
    {
       if (transaction == null) throw new IllegalStateException("there is no transaction");
       // If this transaction is unknown, register for synchroniztion callback,
-      // and call initialValue to give subclasses a chance to do some 
+      // and call initialValue to give subclasses a chance to do some
       // initialization.
       if(!containsValue(transaction))
       {
@@ -282,7 +293,7 @@ public class TransactionLocal
       // finally store the value
       storeValue(transaction, value);
    }
-   
+
    public Transaction getTransaction()
    {
       try
