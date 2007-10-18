@@ -2,13 +2,13 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-integration</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
+    <version>5.0.0.Beta4</version>
     <relativePath>../build/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jboss</groupId>
   <artifactId>jboss-transaction-spi</artifactId>
-  <version>5.0.0-SNAPSHOT</version>
+  <version>5.0.0.Beta4</version>
   <packaging>jar</packaging>
   <name>JBoss Transaction 5.0.0 SPI</name>
   <url>http://www.jboss.org</url>
