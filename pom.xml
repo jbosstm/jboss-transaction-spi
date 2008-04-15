@@ -15,8 +15,8 @@
   <description>The Java Transaction 5.0.0 SPI classes</description>
   <dependencies>
     <dependency>
-      <groupId>jboss</groupId>
-      <artifactId>jboss-common-logging-spi</artifactId>
+      <groupId>org.jboss.logging</groupId>
+      <artifactId>jboss-logging-spi</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jboss.javaee</groupId>
