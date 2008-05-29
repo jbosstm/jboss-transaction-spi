@@ -13,6 +13,10 @@
   <name>JBoss Transaction 5.0.0 SPI</name>
   <url>http://www.jboss.org</url>
   <description>The Java Transaction 5.0.0 SPI classes</description>
+  <build>
+    <sourceDirectory>src/main</sourceDirectory>
+    <testSourceDirectory>src/tests</testSourceDirectory>
+  </build>
   <dependencies>
     <dependency>
       <groupId>org.jboss.logging</groupId>
