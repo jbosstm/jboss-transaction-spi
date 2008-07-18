@@ -43,7 +43,7 @@ public interface XAResourceWrapper extends XAResource, Serializable
     * Get product name
     * @return Product name of the instance that created the wrapper if defined; otherwise <code>null</code>
     */
-   public String getEISProductName();
+   public String getProductName();
 
    /**
     * Get product version
