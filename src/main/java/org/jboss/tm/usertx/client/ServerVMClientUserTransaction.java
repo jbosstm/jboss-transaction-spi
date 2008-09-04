@@ -44,6 +44,7 @@ import org.jboss.tm.TransactionManagerLocator;
  *
  *  @author <a href="mailto:osh@sparre.dk">Ole Husgaard</a>
  *  @author adrian@jboss.org
+ *  @author <a href="mailto:galder.zamarreno@jboss.com">Galder Zamarreno</a>  
  *  @version $Revision: 37459 $
  */
 public class ServerVMClientUserTransaction
@@ -93,7 +94,12 @@ public class ServerVMClientUserTransaction
    }
 
    // Public --------------------------------------------------------
-
+   
+   public boolean isServer()
+   {
+       return tm != null;
+   }
+   
    //Registration for TransactionStartedListeners.
 
    public void registerTxStartedListener(UserTransactionStartedListener txStartedListener)
