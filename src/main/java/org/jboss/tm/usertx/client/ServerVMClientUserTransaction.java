@@ -34,6 +34,8 @@ import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
 
 import org.jboss.tm.TransactionManagerLocator;
+import org.jboss.tm.usertx.UserTransactionProvider;
+import org.jboss.tm.usertx.UserTransactionRegistry;
 
 
 /**
@@ -48,7 +50,7 @@ import org.jboss.tm.TransactionManagerLocator;
  *  @version $Revision: 37459 $
  */
 public class ServerVMClientUserTransaction
-   implements UserTransaction
+   implements UserTransaction, UserTransactionProvider
 {
    // Static --------------------------------------------------------
 
@@ -64,6 +66,10 @@ public class ServerVMClientUserTransaction
    private final TransactionManager tm;
 
 
+   /** Any registry */
+   private volatile UserTransactionRegistry registry;
+
+   /** The listeners */
    private final Collection<UserTransactionStartedListener> listeners = new CopyOnWriteArrayList<UserTransactionStartedListener>();
 
    /**
@@ -128,16 +134,33 @@ public class ServerVMClientUserTransaction
       listeners.remove(txStartedListener);
    }
 
+   public void setTransactionRegistry(UserTransactionRegistry registry)
+   {
+      this.registry = registry;
+   }
+
    //
    // implements interface UserTransaction
    //
 
+
    public void begin() throws NotSupportedException, SystemException
    {
       tm.begin();
-      for (UserTransactionStartedListener listener : listeners)
-         listener.userTransactionStarted();
       
+      UserTransactionRegistry registry = this.registry;
+      if (registry != null)
+         registry.userTransactionStarted();
+
+      try
+      {
+         for (UserTransactionStartedListener listener : listeners)
+            listener.userTransactionStarted();
+      }
+      catch (SystemException e)
+      {
+         rollback();
+      }
    }
 
    public void commit()
@@ -178,6 +201,12 @@ public class ServerVMClientUserTransaction
       tm.setTransactionTimeout(seconds);
    }
 
+   /**
+    * UserTransactionStartedListener.
+    * 
+    * @Deprecated use {@link UserTransactionRegistry} instead
+    */
+   @Deprecated
    public interface UserTransactionStartedListener extends EventListener 
    {
       void userTransactionStarted() throws SystemException;
