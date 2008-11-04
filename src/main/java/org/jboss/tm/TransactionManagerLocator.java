@@ -35,6 +35,7 @@ import org.jboss.logging.Logger;
  * @todo this really belongs in some integration layer with
  *       a more pluggable implementation
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
+ * @author <a href="mailto:galder.zamarreno@jboss.com">Galder Zamarreno</a>  
  * @version $Revision: 37459 $
  */
 public class TransactionManagerLocator implements TransactionManagerFactory
@@ -79,6 +80,20 @@ public class TransactionManagerLocator implements TransactionManagerFactory
    }
    
    /**
+    * Locate the transaction manager
+    *  
+    * @param throwExceptionIfUnableToLocate if true and transaction manager 
+    * cannot be located, a RuntimeException is thrown, otherwise null is 
+    * returned.
+    *  
+    * @return the transaction manager
+    */
+   public static TransactionManager locateTransactionManager(boolean throwExceptionIfUnableToLocate)
+   {
+      return getInstance().locate(throwExceptionIfUnableToLocate);
+   }
+   
+   /**
     * Get the transaction manager
     *  
     * @return the transaction manager
@@ -95,17 +110,31 @@ public class TransactionManagerLocator implements TransactionManagerFactory
     */
    public TransactionManager locate()
    {
+      return locate(true);
+   }
+   
+   /**
+    * Locate the transaction manager
+    * 
+    * @param throwExceptionIfUnableToLocate if true and transaction manager 
+    * cannot be located, a RuntimeException is thrown, otherwise null is 
+    * returned.
+    * 
+    * @return the transaction manager
+    */
+   public TransactionManager locate(boolean throwExceptionIfUnableToLocate)
+   {
       if (tm != null)
          return tm;
 
       TransactionManager result = tryJNDI();
       if (result == null)
          result = usePrivateAPI();
-      if (result == null)
+      if (result == null && throwExceptionIfUnableToLocate)
          throw new RuntimeException("Unable to locate the transaction manager");
       
       return result;
-   }
+   }   
    
    /**
     * Locate the transaction manager in the well known jndi binding for JBoss

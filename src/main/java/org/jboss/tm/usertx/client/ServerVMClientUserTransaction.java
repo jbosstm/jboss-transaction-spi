@@ -90,19 +90,7 @@ public class ServerVMClientUserTransaction
     */
    private ServerVMClientUserTransaction()
    {
-      this(locateTransactionManager());
-   }
-   
-   private static TransactionManager locateTransactionManager()
-   {
-      try
-      {
-         return TransactionManagerLocator.locateTransactionManager();
-      }
-      catch(RuntimeException re)
-      {
-         return null;
-      }
+      this(TransactionManagerLocator.locateTransactionManager(false));
    }
    
    //public constructor for TESTING ONLY
