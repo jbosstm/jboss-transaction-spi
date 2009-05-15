@@ -1,6 +1,6 @@
 <projectDescription>
   <name>jboss-transaction-spi</name>
-  <comment>The Java Transaction 5.0.0 SPI classes</comment>
+  <comment>The Java Transaction 6.0.0 SPI classes</comment>
   <projects/>
   <buildSpec>
     <buildCommand>
