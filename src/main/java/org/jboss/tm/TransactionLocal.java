@@ -35,6 +35,7 @@ import javax.transaction.TransactionManager;
  * @author adrian@jboss.org
  * @version $Revision: 37459 $
  */
+@Deprecated
 public class TransactionLocal
 {
 

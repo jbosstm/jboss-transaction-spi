@@ -29,6 +29,7 @@ import javax.transaction.Transaction;
  * @author <a href="mailto:adrian@jboss.org">Adrian Brock</a>
  * @version $Revision: 37459 $
  */
+@Deprecated
 public interface TransactionLocalDelegate
 {
    /**

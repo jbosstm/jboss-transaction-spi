@@ -21,8 +21,6 @@
  */
 package org.jboss.tm;
 
-import java.io.Serializable;
-
 import javax.transaction.xa.XAResource;
 
 /**
@@ -31,7 +29,7 @@ import javax.transaction.xa.XAResource;
  * @author <a href="jesper.pedersen@jboss.org">Jesper Pedersen</a>
  * @version $Revision: 1.1 $
  */
-public interface XAResourceWrapper extends XAResource, Serializable
+public interface XAResourceWrapper extends XAResource
 {
    /**
     * Get the XAResource that is being wrapped
@@ -50,4 +48,10 @@ public interface XAResourceWrapper extends XAResource, Serializable
     * @return Product version of the instance that created the warpper if defined; otherwise <code>null</code>
     */
    public String getProductVersion();
+
+   /**
+    * Get jndi name
+    * @return The value if defined; otherwise <code>null</code>
+    */
+   public String getJndiName();
 }

@@ -32,6 +32,7 @@ import javax.transaction.Transaction;
  * @author adrian@jboss.org
  * @version $Revision: 60868 $
  */
+@Deprecated
 public class TransactionPropagationContextUtil
 {
    private static TransactionPropagationContextFactory tpcFactory;

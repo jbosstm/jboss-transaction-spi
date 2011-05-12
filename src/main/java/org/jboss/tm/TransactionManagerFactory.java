@@ -30,6 +30,7 @@ import javax.transaction.TransactionManager;
  * @author adrian@jboss.org
  * @version $Revision: 44337 $
  */
+@Deprecated
 public interface TransactionManagerFactory
 {
    /**
@@ -38,5 +39,4 @@ public interface TransactionManagerFactory
     * @return the TransactionManager
     */
    TransactionManager getTransactionManager();
-
 }

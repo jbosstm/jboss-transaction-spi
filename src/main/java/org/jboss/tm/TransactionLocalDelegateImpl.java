@@ -43,6 +43,7 @@ import javax.transaction.TransactionManager;
  * @author <a href="mailto:adrian@jboss.org">Adrian Brock</a>
  * @version $Revision: 37459 $
  */
+@Deprecated
 public class TransactionLocalDelegateImpl
    implements TransactionLocalDelegate
 {

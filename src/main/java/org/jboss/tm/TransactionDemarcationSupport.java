@@ -32,6 +32,7 @@ import javax.transaction.TransactionManager;
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
  * @version $Revision: 37459 $
  */
+@Deprecated
 public class TransactionDemarcationSupport
 {
    /**

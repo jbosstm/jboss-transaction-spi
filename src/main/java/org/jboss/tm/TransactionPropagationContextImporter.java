@@ -33,6 +33,7 @@ import javax.transaction.Transaction;
  *  @author adrian@jboss.org
  *  @version $Revision: 37459 $
  */
+@Deprecated
 public interface TransactionPropagationContextImporter
 {
    /**
@@ -50,4 +51,3 @@ public interface TransactionPropagationContextImporter
     */
    public Transaction importTransactionPropagationContext(Object tpc);
 }
-

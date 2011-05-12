@@ -1,6 +1,6 @@
 /*
   * JBoss, Home of Professional Open Source
-  * Copyright 2005, JBoss Inc., and individual contributors as indicated
+  * Copyright 2011, JBoss Inc., and individual contributors as indicated
   * by the @authors tag. See the copyright.txt in the distribution for a
   * full listing of individual contributors.
   *
@@ -21,23 +21,20 @@
   */
 package org.jboss.tm;
 
-import org.jboss.logging.Logger;
-import javax.transaction.xa.XAException;
-
 /**
- * XAExceptionFormatter
- *
- * @author <a href="mailto:d_jencks@users.sourceforge.net">David Jencks</a>
- * @version $Revision: 37459 $
+ * A connectable last resource
+ * 
+ * @author <a href="mailto:jesper.pedersen@jboss.org">Jesper Pedersen</a>
+ * @author Jonathan Halliday (jonathan.halliday@redhat.com)
  */
-@Deprecated
-public interface XAExceptionFormatter
+public interface ConnectableLastResource extends LastResource
 {
    /**
-    * Format the exception and log it
-    * 
-    * @param xae the exception
-    * @param log the log
+    * Get connection.
+    *
+    * @return The connection; otherwise <code>null</code> if the method isn't supported
+    * @exception Throwable If error occurs
     */
-   void formatXAException(XAException xae, Logger log);
+   public Object getConnection() throws Throwable;
 }
+

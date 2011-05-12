@@ -38,6 +38,7 @@ import org.jboss.logging.Logger;
  * @author <a href="mailto:galder.zamarreno@jboss.com">Galder Zamarreno</a>  
  * @version $Revision: 37459 $
  */
+@Deprecated
 public class TransactionManagerLocator implements TransactionManagerFactory
 {
    /** Logger */

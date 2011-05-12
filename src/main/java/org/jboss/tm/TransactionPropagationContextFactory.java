@@ -41,6 +41,7 @@ import javax.transaction.Transaction;
  *  @author adrian@jboss.org
  *  @version $Revision: 37459 $
  */
+@Deprecated
 public interface TransactionPropagationContextFactory
 {
    /**
