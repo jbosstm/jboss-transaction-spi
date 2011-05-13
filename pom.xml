@@ -2,15 +2,15 @@
   <parent>
     <groupId>org.jboss.integration</groupId>
     <artifactId>jboss-integration-parent</artifactId>
-    <version>6.0.0-SNAPSHOT</version>
+    <version>7.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jboss-transaction-spi</artifactId>
-  <version>6.0.0-SNAPSHOT</version>
+  <version>7.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>JBoss Transaction 6.0.0 SPI</name>
+  <name>JBoss Transaction 7.0.0 SPI</name>
   <url>http://www.jboss.org</url>
-  <description>The Java Transaction 6.0.0 SPI classes</description>
+  <description>The Java Transaction 7.0.0 SPI classes</description>
   <dependencies>
     <dependency>
       <groupId>org.jboss.logging</groupId>
