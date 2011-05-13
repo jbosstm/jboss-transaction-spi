@@ -9,7 +9,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jboss-transaction-spi</artifactId>
-  <version>7.0.0-SNAPSHOT</version>
+  <version>7.0.0.CR1</version>
   <packaging>jar</packaging>
   <name>JBoss Transaction 7.0.0 SPI</name>
   <url>http://www.jboss.org</url>
@@ -17,9 +17,14 @@
 
   <scm>
     <connection>scm:svn:http://anonsvn.jboss.org/repos/jbossas/projects/integration/trunk/jboss-transaction-spi</connection>
-    <developerConnection>scm:svn:https://svn.jboss.org/repos/jbossas/projects/integration/jboss-transaction-spi</developerConnection>
-    <url>http://viewvc.jboss.org/cgi-bin/viewvc.cgi/jbossas/projects/integration/jboss-transaction-spi</url>
+    <developerConnection>scm:svn:https://svn.jboss.org/repos/jbossas/projects/integration/trunk/jboss-transaction-spi</developerConnection>
+    <url>http://viewvc.jboss.org/cgi-bin/viewvc.cgi/jbossas/projects/integration/trunk/jboss-transaction-spi</url>
   </scm>
+
+  <properties>
+    <!-- The base directory for the maven release plugin to create the tag -->
+    <tagBase>https://svn.jboss.org/repos/jbossas/projects/integration/tags/</tagBase>
+  </properties>
 
   <dependencies>
     <dependency>
