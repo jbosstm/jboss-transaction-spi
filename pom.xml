@@ -4,21 +4,21 @@
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
     <version>8</version>
-    <relativePath></relativePath>
+    <relativePath />
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jboss-transaction-spi</artifactId>
-  <version>7.0.0-SNAPSHOT</version>
+  <version>7.0.0.CR2</version>
   <packaging>jar</packaging>
   <name>JBoss Transaction 7.0.0 SPI</name>
   <url>http://www.jboss.org</url>
   <description>The Java Transaction 7.0.0 SPI classes</description>
 
   <scm>
-    <connection>scm:svn:http://anonsvn.jboss.org/repos/jbossas/projects/integration/trunk/jboss-transaction-spi</connection>
-    <developerConnection>scm:svn:https://svn.jboss.org/repos/jbossas/projects/integration/trunk/jboss-transaction-spi</developerConnection>
-    <url>http://viewvc.jboss.org/cgi-bin/viewvc.cgi/jbossas/projects/integration/trunk/jboss-transaction-spi</url>
+    <connection>scm:svn:http://anonsvn.jboss.org/repos/jbossas/projects/integration/tags/jboss-transaction-spi-7.0.0.CR2</connection>
+    <developerConnection>scm:svn:https://svn.jboss.org/repos/jbossas/projects/integration/tags/jboss-transaction-spi-7.0.0.CR2</developerConnection>
+    <url>http://viewvc.jboss.org/cgi-bin/viewvc.cgi/jbossas/projects/integration/tags/jboss-transaction-spi-7.0.0.CR2</url>
   </scm>
 
   <properties>
