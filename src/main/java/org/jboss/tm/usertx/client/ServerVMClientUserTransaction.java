@@ -63,7 +63,7 @@ public class ServerVMClientUserTransaction
    /**
     *  The <code>TransactionManager</code> we delegate to.
     */
-   private final TransactionManager tm;
+   private volatile TransactionManager tm;
 
 
    /** Any registry */
@@ -125,6 +125,11 @@ public class ServerVMClientUserTransaction
    public void setTransactionRegistry(UserTransactionRegistry registry)
    {
       this.registry = registry;
+   }
+
+   public void setTransactionManager(TransactionManager tm)
+   {
+      this.tm = tm;
    }
 
    //
