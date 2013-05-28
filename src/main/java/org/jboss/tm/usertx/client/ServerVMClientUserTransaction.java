@@ -52,6 +52,9 @@ import org.jboss.tm.usertx.UserTransactionRegistry;
 public class ServerVMClientUserTransaction
    implements UserTransaction, UserTransactionProvider
 {
+
+   private static final ThreadLocal<Boolean> isAvailables = new ThreadLocal<Boolean>();
+
    // Static --------------------------------------------------------
 
    /**
@@ -139,6 +142,8 @@ public class ServerVMClientUserTransaction
 
    public void begin() throws NotSupportedException, SystemException
    {
+      testAvailability();
+
       tm.begin();
       
       UserTransactionRegistry registry = this.registry;
@@ -164,6 +169,7 @@ public class ServerVMClientUserTransaction
              IllegalStateException,
              SystemException
    {
+      testAvailability();
       tm.commit();
    }
 
@@ -172,6 +178,7 @@ public class ServerVMClientUserTransaction
              IllegalStateException,
              SystemException
    {
+      testAvailability();
       tm.rollback();
    }
 
@@ -179,18 +186,21 @@ public class ServerVMClientUserTransaction
       throws IllegalStateException,
              SystemException
    {
+      testAvailability();
       tm.setRollbackOnly();
    }
 
    public int getStatus()
       throws SystemException
    {
+      testAvailability();
       return tm.getStatus();
    }
 
    public void setTransactionTimeout(int seconds)
       throws SystemException
    {
+      testAvailability();
       tm.setTransactionTimeout(seconds);
    }
 
@@ -203,5 +213,23 @@ public class ServerVMClientUserTransaction
    public interface UserTransactionStartedListener extends EventListener 
    {
       void userTransactionStarted() throws SystemException;
+   }
+
+   public static void setAvailability(boolean available) {
+      isAvailables.set(available);
+   }
+
+   public static boolean isAvailable() {
+      Boolean isAvailable = isAvailables.get();
+      if (isAvailable == null) {
+        return true; //default is available
+      }
+      return isAvailable;
+   }
+
+   private void testAvailability() {
+      if (!isAvailable()) {
+        throw new IllegalStateException("UserTransaction is not available within the scope of a bean or method annotated with @Transactional and a Transactional.TxType other than NOT_SUPPORTED or NEVER");
+      }
    }
 }
