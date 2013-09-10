@@ -153,7 +153,8 @@ public class TransactionManagerLocator implements TransactionManagerFactory
       }
       catch (NamingException e)
       {
-         log.debug("Unable to lookup: " + JNDI_NAME, e);
+         log.debugf("Unable to lookup JNDI name %s reason %s",
+             JNDI_NAME, e.getMessage());
       }
       return tm;
    }
@@ -177,7 +178,8 @@ public class TransactionManagerLocator implements TransactionManagerFactory
       }
       catch (Exception e)
       {
-         log.debug("Unable to instantiate legacy transaction manager", e);
+         log.debugf("Unable to instantiate legacy transaction manager: %s",
+             e.getMessage());
          return null;
       }
    }
