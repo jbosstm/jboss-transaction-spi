@@ -41,6 +41,9 @@ import javax.transaction.xa.XAResource;
  */
 public class TxUtils
 {
+   private static final String ARJUNA_REAPER_THREAD_NAME =
+      "Transaction Reaper Worker";
+
    /** Transaction Status Strings */
    private static final String[] TxStatusStrings =
    {
@@ -411,5 +414,19 @@ public class TxUtils
       default:
          return "XA_UNKNOWN(" + errorCode + ")";
       }
+   }
+
+   /**
+    * Determine whether the calling thread is the transaction manager
+    * and is processing a transaction timeout:
+    *
+    * @return true if the current thread was created by the TM and is handling
+    * a transaction timeout, otherwise return false
+    */
+   public static boolean isTransactionManagerTimeoutThread() {
+     String currentThreadName = Thread.currentThread().getName();
+     
+     return currentThreadName != null &&
+         currentThreadName.startsWith(ARJUNA_REAPER_THREAD_NAME);
    }
 }
