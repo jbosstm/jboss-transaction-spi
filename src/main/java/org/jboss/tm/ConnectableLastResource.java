@@ -22,11 +22,14 @@
 package org.jboss.tm;
 
 /**
+ * @deprecated use {@link ConnectableResource} and {@link LastResource} instead
+ *
  * A connectable last resource
  * 
  * @author <a href="mailto:jesper.pedersen@jboss.org">Jesper Pedersen</a>
  * @author Jonathan Halliday (jonathan.halliday@redhat.com)
  */
+@Deprecated
 public interface ConnectableLastResource extends LastResource
 {
    /**
