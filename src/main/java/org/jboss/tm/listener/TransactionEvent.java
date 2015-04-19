@@ -22,14 +22,15 @@
 package org.jboss.tm.listener;
 
 import javax.transaction.Transaction;
+import java.util.EnumSet;
 
 public class TransactionEvent {
     private Transaction transaction;
-    private EventType type;
+    private EnumSet<EventType> types;
 
-    public TransactionEvent(Transaction transaction, EventType type) {
+    public TransactionEvent(Transaction transaction,EnumSet<EventType> types) {
         this.transaction = transaction;
-        this.type = type;
+        this.types = types;
     }
 
     /**
@@ -41,9 +42,7 @@ public class TransactionEvent {
     }
 
     /**
-     * @return indication of what kind of change has occurred
+     * @return indication of what kind of changes have occurred
      */
-    public EventType getType() {
-        return type;
-    }
+    public EnumSet<EventType> getTypes() { return types; }
 }

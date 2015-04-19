@@ -22,13 +22,15 @@
 package org.jboss.tm.listener;
 
 import javax.transaction.Transaction;
+import java.util.EnumSet;
 
 public interface TransactionListenerRegistry {
     /**
      * @param transaction the transaction that the caller is interested in receiving events for (must not be null)
      * @param listener an object that will be invoked when events of type {@link EventType}
      *                 occur
+     * @param types a collection of events that the listener is interested in
      * @throws TransactionTypeNotSupported if the passed in transaction type does not support the listeners feature
      */
-    void addListener (Transaction transaction, TransactionListener listener) throws TransactionTypeNotSupported;
+    void addListener (Transaction transaction, TransactionListener listener, EnumSet<EventType> types) throws TransactionTypeNotSupported;
 }

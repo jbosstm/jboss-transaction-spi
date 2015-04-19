@@ -23,7 +23,7 @@ package org.jboss.tm.listener;
 
 /**
  * An exception type to indicate that the actual transaction type passed into
- * {@link TransactionListenerRegistry#addListener(javax.transaction.Transaction, TransactionListener)}
+ * {@link TransactionListenerRegistry#addListener(javax.transaction.Transaction, TransactionListener, java.util.EnumSet)}
  * does not support TSR resources
  * (see {@link javax.transaction.TransactionSynchronizationRegistry#putResource(Object, Object)})
  */

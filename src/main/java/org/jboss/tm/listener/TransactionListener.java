@@ -27,7 +27,7 @@ package org.jboss.tm.listener;
 public interface TransactionListener {
     /**
      * The callback for notifying registered listeners of a transaction related event. Use
-     * {@link TransactionListenerRegistry#addListener(javax.transaction.Transaction, TransactionListener)}
+     * {@link TransactionListenerRegistry#addListener(javax.transaction.Transaction, TransactionListener, java.util.EnumSet)}
      * to register for transaction related events
      * @param transactionEvent indication of what kind of change has occurred
      */
