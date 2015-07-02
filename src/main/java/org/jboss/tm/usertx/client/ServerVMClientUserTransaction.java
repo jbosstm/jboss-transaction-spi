@@ -25,6 +25,12 @@ import java.util.Collection;
 import java.util.EventListener;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import java.io.Serializable;
+
+import javax.naming.NamingException;
+import javax.naming.Reference;
+import javax.naming.Referenceable;
+
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -36,7 +42,6 @@ import javax.transaction.UserTransaction;
 import org.jboss.tm.TransactionManagerLocator;
 import org.jboss.tm.usertx.UserTransactionProvider;
 import org.jboss.tm.usertx.UserTransactionRegistry;
-
 
 /**
  *  The client-side UserTransaction implementation for clients
@@ -50,7 +55,7 @@ import org.jboss.tm.usertx.UserTransactionRegistry;
  *  @version $Revision: 37459 $
  */
 public class ServerVMClientUserTransaction
-   implements UserTransaction, UserTransactionProvider
+   implements UserTransaction, UserTransactionProvider, Serializable, Referenceable
 {
 
    private static final ThreadLocal<Boolean> isAvailables = new ThreadLocal<Boolean>();
@@ -202,6 +207,12 @@ public class ServerVMClientUserTransaction
    {
       testAvailability();
       tm.setTransactionTimeout(seconds);
+   }
+
+   @Override
+   public Reference getReference() throws NamingException {
+      return new Reference(ServerVMClientUserTransaction.class.getName(),
+          ServerVMClientUserTransactionFactory.class.getCanonicalName(), null);
    }
 
    /**
