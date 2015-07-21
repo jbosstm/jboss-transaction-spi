@@ -21,20 +21,27 @@
  */
 package org.jboss.tm.listener;
 
-import javax.transaction.Transaction;
-import java.util.EnumSet;
+import org.jboss.tm.TransactionManagerLocator;
+
+import javax.transaction.TransactionManager;
 
 /**
- * A listener interface for transaction related events. To obtain an instance of this interface
- * refer to {@link org.jboss.tm.listener.TransactionListenerRegistryLocator}
+ * Locate an interface that implements a registration mechanism for transaction lifecycle events {@link EventType}
  */
-public interface TransactionListenerRegistry {
+public class TransactionListenerRegistryLocator {
     /**
-     * @param transaction the transaction that the caller is interested in receiving events for (must not be null)
-     * @param listener an object that will be invoked when events of type {@link EventType}
-     *                 occur
-     * @param types a collection of events that the listener is interested in
-     * @throws TransactionTypeNotSupported if the passed in transaction type does not support the listeners feature
+     *
+     * @return an interface for registering interest in transaction lifecycle events
+     * @throws TransactionListenerRegistryUnavailableException if no such interface has been registered with the SPI
      */
-    void addListener (Transaction transaction, TransactionListener listener, EnumSet<EventType> types) throws TransactionTypeNotSupported;
+    public static TransactionListenerRegistry getTransactionListenerRegistry()
+            throws TransactionListenerRegistryUnavailableException {
+        TransactionManager tm = TransactionManagerLocator.locateTransactionManager();
+
+        if (tm instanceof TransactionListenerRegistry) {
+            return (TransactionListenerRegistry) tm;
+        }
+
+        throw new TransactionListenerRegistryUnavailableException();
+    }
 }

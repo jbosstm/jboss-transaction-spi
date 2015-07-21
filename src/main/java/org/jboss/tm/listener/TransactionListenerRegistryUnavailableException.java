@@ -21,20 +21,15 @@
  */
 package org.jboss.tm.listener;
 
-import javax.transaction.Transaction;
-import java.util.EnumSet;
-
 /**
- * A listener interface for transaction related events. To obtain an instance of this interface
- * refer to {@link org.jboss.tm.listener.TransactionListenerRegistryLocator}
+ * An exception type thrown by {@link org.jboss.tm.listener.TransactionListenerRegistryLocator} if the registry
+ * is unavailable
  */
-public interface TransactionListenerRegistry {
-    /**
-     * @param transaction the transaction that the caller is interested in receiving events for (must not be null)
-     * @param listener an object that will be invoked when events of type {@link EventType}
-     *                 occur
-     * @param types a collection of events that the listener is interested in
-     * @throws TransactionTypeNotSupported if the passed in transaction type does not support the listeners feature
-     */
-    void addListener (Transaction transaction, TransactionListener listener, EnumSet<EventType> types) throws TransactionTypeNotSupported;
+public class TransactionListenerRegistryUnavailableException extends Exception {
+     public TransactionListenerRegistryUnavailableException(String message) {
+        super(message);
+    }
+
+    public TransactionListenerRegistryUnavailableException() {
+    }
 }
