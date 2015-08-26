@@ -87,6 +87,28 @@
     <version.org.jboss.spec.javax.resource.jboss-connector-api_1.5_spec>1.0.0.Final</version.org.jboss.spec.javax.resource.jboss-connector-api_1.5_spec>
   </properties>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>jboss-releases-repository</serverId>
+          <nexusUrl>https://repository.jboss.org/nexus/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
   <dependencies>
     <dependency>
       <groupId>org.jboss.logging</groupId>
