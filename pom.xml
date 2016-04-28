@@ -84,7 +84,7 @@
     <version.org.jboss.logging.jboss-logging>3.1.4.GA</version.org.jboss.logging.jboss-logging>
     <version.org.jboss.logging.jboss-logging-processor>1.1.0.Final</version.org.jboss.logging.jboss-logging-processor>
     <version.org.jboss.spec.javax.transaction>1.0.0.Alpha3</version.org.jboss.spec.javax.transaction>
-    <version.org.jboss.spec.javax.resource.jboss-connector-api_1.5_spec>1.0.0.Final</version.org.jboss.spec.javax.resource.jboss-connector-api_1.5_spec>
+    <version.org.jboss.spec.javax.resource.jboss-connector-api_1.7_spec>1.0.0.Final</version.org.jboss.spec.javax.resource.jboss-connector-api_1.7_spec>
   </properties>
 
   <build>
@@ -124,8 +124,8 @@
     </dependency>
     <dependency>
       <groupId>org.jboss.spec.javax.resource</groupId>
-      <artifactId>jboss-connector-api_1.5_spec</artifactId>
-      <version>${version.org.jboss.spec.javax.resource.jboss-connector-api_1.5_spec}</version>
+      <artifactId>jboss-connector-api_1.7_spec</artifactId>
+      <version>${version.org.jboss.spec.javax.resource.jboss-connector-api_1.7_spec}</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.spec.javax.transaction</groupId>
