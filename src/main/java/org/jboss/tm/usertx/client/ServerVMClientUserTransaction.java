@@ -21,11 +21,13 @@
   */
 package org.jboss.tm.usertx.client;
 
+import java.io.*;
 import java.util.Collection;
 import java.util.EventListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.naming.NamingException;
 import javax.naming.Reference;
@@ -55,30 +57,35 @@ import org.jboss.tm.usertx.UserTransactionRegistry;
  *  @version $Revision: 37459 $
  */
 public class ServerVMClientUserTransaction
-   implements UserTransaction, UserTransactionProvider, Serializable, Referenceable
+   implements UserTransaction, UserTransactionProvider, Referenceable, Externalizable
 {
+   private static final transient AtomicLong OID = new AtomicLong(0);
 
-   private static final ThreadLocal<Boolean> isAvailables = new ThreadLocal<Boolean>();
+   private static final transient ThreadLocal<Boolean> isAvailables = new ThreadLocal<Boolean>();
+
+   private static final transient Map<Long, ServerVMClientUserTransaction> userTransactions =
+           new HashMap<Long, ServerVMClientUserTransaction>();
 
    // Static --------------------------------------------------------
 
    /**
     *  Our singleton instance.
     */
-   private final static ServerVMClientUserTransaction singleton = new ServerVMClientUserTransaction();
+   private final static transient ServerVMClientUserTransaction singleton = new ServerVMClientUserTransaction();
 
+   private long id;
 
    /**
     *  The <code>TransactionManager</code> we delegate to.
     */
-   private volatile TransactionManager tm;
+   private volatile transient TransactionManager tm;
 
 
    /** Any registry */
-   private volatile UserTransactionRegistry registry;
+   private volatile transient UserTransactionRegistry registry;
 
    /** The listeners */
-   private final Collection<UserTransactionStartedListener> listeners = new CopyOnWriteArrayList<UserTransactionStartedListener>();
+   private final transient Collection<UserTransactionStartedListener> listeners = new CopyOnWriteArrayList<UserTransactionStartedListener>();
 
    /**
     *  Return a reference to the singleton instance.
@@ -96,15 +103,23 @@ public class ServerVMClientUserTransaction
    /**
     *  Create a new instance.
     */
-   private ServerVMClientUserTransaction()
+   public ServerVMClientUserTransaction()
    {
-      this(TransactionManagerLocator.locateTransactionManager(false));
+      this(TransactionManagerLocator.locateTransactionManager(false), false);
    }
    
-   //public constructor for TESTING ONLY
    public ServerVMClientUserTransaction(final TransactionManager tm)
    {
+      this(tm, true);
+   }
+
+   private ServerVMClientUserTransaction(final TransactionManager tm, boolean statefull)
+   {
       this.tm = tm;
+      id = OID.getAndIncrement();
+      
+      if (statefull)
+          userTransactions.put(id, this);
    }
 
    // Public --------------------------------------------------------
@@ -215,6 +230,23 @@ public class ServerVMClientUserTransaction
           ServerVMClientUserTransactionFactory.class.getCanonicalName(), null);
    }
 
+   @Override
+   public void writeExternal(ObjectOutput out) throws IOException {
+      out.writeLong(id);
+   }
+
+   @Override
+   public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+      id = in.readLong();
+
+   }
+
+   private Object readResolve() throws ObjectStreamException {
+      Object ut = userTransactions.get(id);
+
+      return ut ==  null ? getSingleton() : ut;
+   }
+ 
    /**
     * UserTransactionStartedListener.
     * 
