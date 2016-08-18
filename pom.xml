@@ -21,6 +21,20 @@
     <url>${narayana.spi.scm.url}</url>
   </scm>
 
+  <repositories>
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Maven Repository Group</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  
   <properties>
     <!-- The base directory for the maven release plugin to create the tag -->
     <tagBase>https://svn.jboss.org/repos/jbossas/projects/integration/tags/</tagBase>
@@ -30,6 +44,8 @@
     <version.org.jboss.logging.jboss-logging-processor>1.1.0.Final</version.org.jboss.logging.jboss-logging-processor>
     <version.org.jboss.spec.javax.transaction>1.0.0.Alpha3</version.org.jboss.spec.javax.transaction>
     <version.org.jboss.spec.javax.resource.jboss-connector-api_1.5_spec>1.0.0.Final</version.org.jboss.spec.javax.resource.jboss-connector-api_1.5_spec>
+    <version.junit>4.11</version.junit>
+    <version.narayana>5.2.18.Final</version.narayana>
   </properties>
 
   <dependencies>
@@ -55,6 +71,42 @@
       <artifactId>jboss-transaction-api_1.2_spec</artifactId>
       <version>${version.org.jboss.spec.javax.transaction}</version>
     </dependency>
+
+    <!-- test dependencies -->
+    <dependency>
+      <groupId>org.jboss.narayana.jta</groupId>
+      <artifactId>narayana-jta</artifactId>
+      <version>${version.narayana}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- dependency for jta TransactionManagerDelegate -->
+    <dependency>
+      <groupId>org.jboss.narayana.jts</groupId>
+      <artifactId>narayana-jts-integration</artifactId>
+      <version>${version.narayana}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${version.junit}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.naming</groupId>
+      <artifactId>jnpserver</artifactId>
+      <version>5.0.3.GA</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jboss.logging</groupId>
+          <artifactId>jboss-logging-spi</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
   </dependencies>
 
 </project>
