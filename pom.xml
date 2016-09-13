@@ -11,9 +11,9 @@
   <artifactId>jboss-transaction-spi</artifactId>
   <version>7.1.0.SP2-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>JBoss Transaction 7.1.0 SPI</name>
+  <name>JBoss Transaction SPI</name>
   <url>http://www.jboss.org</url>
-  <description>The Java Transaction 7.1.0 SPI classes</description>
+  <description>The Java Transaction SPI classes</description>
 
   <scm>
     <connection>scm:git:${jboss.as.scm.connection}</connection>
