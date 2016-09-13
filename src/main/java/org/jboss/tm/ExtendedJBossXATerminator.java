@@ -26,14 +26,34 @@ import javax.transaction.xa.XAException;
 import javax.transaction.xa.Xid;
 
 public interface ExtendedJBossXATerminator extends JBossXATerminator {
-    /**
-     * Convert an imported Xid into a Transaction object.
-     *
-     * @param xid the global Xid of the target transaction to lookup
-     *
-     * @return A transaction object corresponding to the Xid or null if there is no such transaction
-     *
-     * @throws XAException with code XA_RBROLLBACK if the transaction has already aborted
-     */
-    Transaction getTransaction(Xid xid) throws XAException;
+	/**
+	 * A thread safe method to convert an imported Xid into a Transaction object. If the transaction does not exist
+	 * then a subordinate transaction for the xid will be created and associated with the global transaction.
+	 *
+	 * In the case where a new subordinate is created then the timeout parameter will be used. If timeout is non zero
+	 * then the inflowed transaction will survive for that period before being
+	 * eligible to be aborted. If timeout is zero then no timeout will be associated with the subordinate transaction.
+	 *
+	 * @param xid
+	 *            The global Xid of the target transaction to lookup
+	 * @param timeoutIfNew
+	 *            The timeout associated with the global transaction if one was created.
+	 *
+	 * @return
+	 *            A wrapper containing the transaction object corresponding to the Xid or null if there is no such transaction
+	 *
+	 * @throws XAException with code XA_RBROLLBACK if the transaction has already aborted
+	 */
+	TransactionImportResult importTransaction(Xid xid, int timeoutIfNew) throws XAException;
+
+	/**
+	 * Convert an imported Xid into a Transaction object.
+	 *
+	 * @param xid the global Xid of the target transaction to lookup
+	 *
+	 * @return A transaction object corresponding to the Xid or null if there is no such transaction
+	 *
+	 * @throws XAException with code XA_RBROLLBACK if the transaction has already aborted
+	 */
+	Transaction getTransaction(Xid xid) throws XAException;
 }
