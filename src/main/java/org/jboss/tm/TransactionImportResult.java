@@ -21,48 +21,38 @@
  */
 package org.jboss.tm;
 
-import javax.transaction.Transaction;
-
 /**
- * Returned from importTransaction it has a reference to a transaction and whether the import resulted is its creation.
+ * Returned from the {@link ExtendedJBossXATerminator#importTransaction} call. It has a reference to a transaction
+ * and an indication of whether or not imported transaction has been seen before
  */
 public class TransactionImportResult {
-    private Transaction transaction;
+    private ImportedTransaction transaction;
     private boolean subordinateCreated;
 
     /**
-     * Get the transaction
+     * @param transaction the imported transaction or null if the import failed
+     * @param subordinateCreated indication of whether or not this imported transaction has been seen before.
+     */
+    public TransactionImportResult(ImportedTransaction transaction, boolean subordinateCreated) {
+        this.transaction = transaction;
+        this.subordinateCreated = subordinateCreated;
+    }
+
+    /**
+     * Get the imported transaction
      *
      * @return the imported transaction or null
      */
-    public Transaction getTransaction() {
+    public ImportedTransaction getTransaction() {
         return transaction;
     }
 
     /**
-     * Initialize the transaction
+     * Indicate whether or not this imported transaction has been seen before.
      *
-     * @param transaction
+     * @return whether or not this imported transaction has been seen before.
      */
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
-    }
-
-    /**
-     * Was the transaction referenced in the getTransaction() call created in this import routine.
-     *
-     * @return
-     */
-    public boolean isSubordinateCreated() {
+    public boolean isNewImportedTransaction() {
         return subordinateCreated;
-    }
-
-    /**
-     * Set the import status of the subordinate transaction in relation to this call.
-     * 
-     * @param subordinateCreated
-     */
-    public void setSubordinateCreated(boolean subordinateCreated) {
-        this.subordinateCreated = subordinateCreated;
     }
 }
