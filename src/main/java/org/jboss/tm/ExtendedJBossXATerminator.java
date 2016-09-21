@@ -21,11 +21,12 @@
  */
 package org.jboss.tm;
 
+import javax.transaction.NotSupportedException;
 import javax.transaction.Transaction;
 import javax.transaction.xa.XAException;
 import javax.transaction.xa.Xid;
 
-public interface ExtendedJBossXATerminator extends JBossXATerminator {
+public interface ExtendedJBossXATerminator {
 	/**
 	 * A thread safe method to convert an imported Xid into a Transaction object. If the transaction does not exist
 	 * then a subordinate transaction for the xid will be created and associated with the global transaction.
@@ -56,4 +57,66 @@ public interface ExtendedJBossXATerminator extends JBossXATerminator {
 	 * @throws XAException with code XA_RBROLLBACK if the transaction has already aborted
 	 */
 	Transaction getTransaction(Xid xid) throws XAException;
+
+    /**
+     * Look up a transaction by its id
+     *
+     * @param uid an id that uniquelly identifies a transaction
+     * @return
+     */
+	Transaction getTransactionById(Object uid);
+
+    /**
+     * Obtain the unique id of the currently associated transaction
+     *
+     * @return the id or null if no transaction is associated with the calling thread
+     */
+	Object getCurrentTransactionId();
+
+    /**
+     * Lookup an imported transaction by its Xid
+     *
+     * @param xid the Xid of the transaction to lookup
+     * @return the corresponding imported transaction object or null
+     * @throws XAException if the transaction is known to have rolled back
+     */
+	ImportedTransaction getImportedTransaction(Xid xid) throws XAException;
+
+    /**
+     * Get a list of Xids that are potentially recoverable.
+     *
+     * @param recoverInFlight indicates whether or not to include transactions that have not begun 2PC
+     * @param parentNodeName If not null then only recover transactions for this node
+     * @param recoveryFlags One of TMSTARTRSCAN, TMENDRSCAN, TMNOFLAGS. TMNOFLAGS must be used when no other flags are
+     *                      set in the parameter. These constants are defined in javax.transaction.xa.XAResource interface
+     * @return an array of Xids to recover
+     * @throws XAException An error has occurred. Possible values are XAER_RMERR, XAER_RMFAIL, XAER_INVAL, and XAER_PROTO.
+     */
+    Xid[] getXidsToRecoverForParentNode(boolean recoverInFlight, final String parentNodeName, int recoveryFlags) throws XAException;
+
+    /**
+     * Return a list of indoubt transactions. This may include those
+     * transactions that are currently in-flight (the 2PC phase has not been reached) and do not need
+     * recovery invoked on them.
+     *
+     * @param parentNodeName
+     * 				If not null then only recover transactions for this node
+     * @throws XAException
+     *             thrown if any error occurs.
+     * @return a list of potentially indoubt transactions or <code>null</code>.
+     */
+    Xid[] doRecover (Xid xid, String parentNodeName) throws XAException, NotSupportedException;
+
+    /**
+     * Test whether or not the {@link ExtendedJBossXATerminator#doRecover(Xid, String)} call will throw NotSupportedException
+     * @return
+     */
+    boolean isRecoveryByNodeOrXidSupported();
+
+    /**
+     * forget about this imported transaction.
+     * @param xid the global Xid of the transaction.
+     * @throws XAException thrown if there are any errors.
+     */
+    void removeImportedTransaction(Xid xid) throws XAException;
 }
