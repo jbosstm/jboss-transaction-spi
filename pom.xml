@@ -21,6 +21,20 @@
     <url>${narayana.spi.scm.url}</url>
   </scm>
 
+  <repositories>
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Maven Repository Group</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  
   <properties>
     <!-- The base directory for the maven release plugin to create the tag -->
     <tagBase>https://svn.jboss.org/repos/jbossas/projects/integration/tags/</tagBase>
