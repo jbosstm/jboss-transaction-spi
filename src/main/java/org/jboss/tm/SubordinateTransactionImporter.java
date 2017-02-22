@@ -20,35 +20,23 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.tm.usertx;
+package org.jboss.tm;
 
-import javax.transaction.UserTransaction;
+import javax.transaction.xa.XAException;
 
 /**
- * Interface of provider which offers additional
- * operations above {@link UserTransaction}.
+ * Interface serving to specify way to import transaction to current TM processing.
+ * This is used for example by txbridge to import transaction to WFLY transaction context.
  *
  * @author Ondra Chaloupka <ochaloup@redhat.com>
  */
-public interface UserTransactionOperationsProvider {
+public interface SubordinateTransactionImporter {
     /**
-     * <p>
-     * Narayana pushes information about availability of user transaction
-     * at current thread.
-     * <p>
-     * For example UserTransaction is not available within particular scopes
-     * that's for example for @Transactional CDI bean and a TxType other than NOT_SUPPORTED or NEVER.
+     * Imports transaction with defined xid to current transaction processing.<br>
      *
-     * @param available  boolean parameter setting transaction availability
+     * @param xid  xid under which transaction will be imported
+     * @return  imported transaction now managed by transaction manager, not null
+     * @throws XAException  when issue with importing transaction happens
      */
-    void setAvailability(boolean available);
-
-    /**
-     * Narayana gathers information on availability of user transaction
-     * at current thread.
-     *
-     * @return current availability of transaction
-     */
-    boolean getAvailability();
-
+    javax.transaction.Transaction getTransaction(javax.transaction.xa.Xid xid) throws XAException;
 }
