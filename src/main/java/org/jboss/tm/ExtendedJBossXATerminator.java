@@ -91,6 +91,7 @@ public interface ExtendedJBossXATerminator {
      *                      set in the parameter. These constants are defined in javax.transaction.xa.XAResource interface
      * @return an array of Xids to recover
      * @throws XAException An error has occurred. Possible values are XAER_RMERR, XAER_RMFAIL, XAER_INVAL, and XAER_PROTO.
+     * @throws UnsupportedOperationException Operation is not supported in the context. This happens when Narayana runs on JTS.
      */
     Xid[] getXidsToRecoverForParentNode(boolean recoverInFlight, final String parentNodeName, int recoveryFlags) throws XAException;
 
