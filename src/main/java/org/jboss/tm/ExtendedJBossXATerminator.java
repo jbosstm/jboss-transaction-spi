@@ -63,14 +63,22 @@ public interface ExtendedJBossXATerminator {
      *
      * @param uid an id that uniquelly identifies a transaction
      * @return
+     * @deprecated deprecating based of addition of wildfly transaction client.
+     *   This method is no longer needed for integration purposes with WildFly.
+     *   You can expect its removal in some of the next releases.
      */
+	@Deprecated
 	Transaction getTransactionById(Object uid);
 
     /**
      * Obtain the unique id of the currently associated transaction
      *
      * @return the id or null if no transaction is associated with the calling thread
+     * @deprecated deprecating based of addition of wildfly transaction client.
+     *   This method is no longer needed for integration purposes with WildFly.
+     *   You can expect its removal in some of the next releases.
      */
+	@Deprecated
 	Object getCurrentTransactionId();
 
     /**
@@ -79,7 +87,11 @@ public interface ExtendedJBossXATerminator {
      * @param xid the Xid of the transaction to lookup
      * @return the corresponding imported transaction object or null
      * @throws XAException if the transaction is known to have rolled back
+     * @deprecated deprecating based of addition of wildfly transaction client.
+     *   This method is no longer needed for integration purposes with WildFly.
+     *   You can expect its removal in some of the next releases.
      */
+	@Deprecated
 	ImportedTransaction getImportedTransaction(Xid xid) throws XAException;
 
     /**
@@ -92,7 +104,11 @@ public interface ExtendedJBossXATerminator {
      * @return an array of Xids to recover
      * @throws XAException An error has occurred. Possible values are XAER_RMERR, XAER_RMFAIL, XAER_INVAL, and XAER_PROTO.
      * @throws UnsupportedOperationException Operation is not supported in the context. This happens when Narayana runs on JTS.
+     * @deprecated deprecating based of addition of wildfly transaction client.
+     *   This method is no longer needed for integration purposes with WildFly.
+     *   You can expect its removal in some of the next releases.
      */
+    @Deprecated
     Xid[] getXidsToRecoverForParentNode(boolean recoverInFlight, final String parentNodeName, int recoveryFlags) throws XAException;
 
     /**
@@ -111,7 +127,11 @@ public interface ExtendedJBossXATerminator {
     /**
      * Test whether or not the {@link ExtendedJBossXATerminator#doRecover(Xid, String)} call will throw NotSupportedException
      * @return
+     * @deprecated deprecating based of addition of wildfly transaction client.
+     *   This method is no longer needed for integration purposes with WildFly.
+     *   You can expect its removal in some of the next releases.
      */
+    @Deprecated
     boolean isRecoveryByNodeOrXidSupported();
 
     /**
