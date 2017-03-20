@@ -26,8 +26,11 @@ import org.jboss.tm.TransactionManagerLocator;
 import javax.transaction.TransactionManager;
 
 /**
+ * @deprecated WFTC (https://issues.jboss.org/projects/WFTC) replaces this functionality
+ *
  * Locate an interface that implements a registration mechanism for transaction lifecycle events {@link EventType}
  */
+@Deprecated
 public class TransactionListenerRegistryLocator {
     /**
      *

@@ -25,9 +25,12 @@ import javax.transaction.Transaction;
 import java.util.EnumSet;
 
 /**
+ * @deprecated WFTC (https://issues.jboss.org/projects/WFTC) replaces this functionality
+ *
  * A listener interface for transaction related events. To obtain an instance of this interface
  * refer to {@link org.jboss.tm.listener.TransactionListenerRegistryLocator}
  */
+@Deprecated
 public interface TransactionListenerRegistry {
     /**
      * @param transaction the transaction that the caller is interested in receiving events for (must not be null)

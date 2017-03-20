@@ -22,8 +22,11 @@
 package org.jboss.tm.listener;
 
 /**
+ * @deprecated WFTC (https://issues.jboss.org/projects/WFTC) replaces this functionality
+ *
  * An indication of an event that effects the current transaction
  */
+@Deprecated
 public enum EventType {
     /**
      * a transaction is associated with the current thread

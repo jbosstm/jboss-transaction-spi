@@ -24,6 +24,10 @@ package org.jboss.tm.listener;
 import javax.transaction.Transaction;
 import java.util.EnumSet;
 
+/**
+ * @deprecated WFTC (https://issues.jboss.org/projects/WFTC) replaces this functionality
+ */
+@Deprecated
 public class TransactionEvent {
     private Transaction transaction;
     private EnumSet<EventType> types;

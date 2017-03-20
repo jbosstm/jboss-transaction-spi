@@ -22,8 +22,11 @@
 package org.jboss.tm.listener;
 
 /**
+ * @deprecated WFTC (https://issues.jboss.org/projects/WFTC) replaces this functionality
+ *
  * A listener callback for transaction related events
  */
+@Deprecated
 public interface TransactionListener {
     /**
      * The callback for notifying registered listeners of a transaction related event. Use

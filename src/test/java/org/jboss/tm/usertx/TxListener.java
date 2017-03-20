@@ -26,6 +26,7 @@ import org.jboss.tm.listener.*;
 import javax.transaction.Synchronization;
 import java.util.EnumSet;
 
+@Deprecated
 public class TxListener implements Synchronization, TransactionListener {
     private volatile int assoc = 0; // we don't get a listener callback for the initial association
     private volatile boolean closed = false;

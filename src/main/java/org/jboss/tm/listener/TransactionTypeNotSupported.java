@@ -22,11 +22,14 @@
 package org.jboss.tm.listener;
 
 /**
+ * @deprecated WFTC (https://issues.jboss.org/projects/WFTC) replaces this functionality
+ *
  * An exception type to indicate that the actual transaction type passed into
  * {@link TransactionListenerRegistry#addListener(javax.transaction.Transaction, TransactionListener, java.util.EnumSet)}
  * does not support TSR resources
  * (see {@link javax.transaction.TransactionSynchronizationRegistry#putResource(Object, Object)})
  */
+@Deprecated
 public class TransactionTypeNotSupported extends Exception {
     public TransactionTypeNotSupported(String message) {
         super(message);
