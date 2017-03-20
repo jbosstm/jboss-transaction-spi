@@ -22,9 +22,12 @@
 package org.jboss.tm.listener;
 
 /**
+ * @deprecated use {@link org.jboss.tm.listener.event.TransactionLifecycleListenerRegistryUnavailableException}
+ *
  * An exception type thrown by {@link org.jboss.tm.listener.TransactionListenerRegistryLocator} if the registry
  * is unavailable
  */
+@Deprecated
 public class TransactionListenerRegistryUnavailableException extends Exception {
      public TransactionListenerRegistryUnavailableException(String message) {
         super(message);

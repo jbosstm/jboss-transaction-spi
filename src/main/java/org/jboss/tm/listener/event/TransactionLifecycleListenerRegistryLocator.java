@@ -19,19 +19,29 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tm.listener;
+package org.jboss.tm.listener.event;
+
+import org.jboss.tm.TransactionManagerLocator;
+
+import javax.transaction.TransactionManager;
 
 /**
- * @deprecated use {@link org.jboss.tm.listener.event.TransactionLifecycleTypeNotSupported}
- *
- * An exception type to indicate that the actual transaction type passed into
- * {@link TransactionListenerRegistry#addListener(javax.transaction.Transaction, TransactionListener, java.util.EnumSet)}
- * does not support TSR resources
- * (see {@link javax.transaction.TransactionSynchronizationRegistry#putResource(Object, Object)})
+ * Locate an interface that implements a registration mechanism for transaction lifecycle events {@link TransactionLifecycleEvent}
  */
-@Deprecated
-public class TransactionTypeNotSupported extends Exception {
-    public TransactionTypeNotSupported(String message) {
-        super(message);
+public class TransactionLifecycleListenerRegistryLocator {
+    /**
+     *
+     * @return an interface for registering interest in transaction lifecycle events
+     * @throws TransactionLifecycleListenerRegistryUnavailableException if no such interface has been registered with the SPI
+     */
+    public static TransactionLifecycleListenerRegistry getTransactionListenerRegistry()
+            throws TransactionLifecycleListenerRegistryUnavailableException {
+        TransactionManager tm = TransactionManagerLocator.locateTransactionManager();
+
+        if (tm instanceof TransactionLifecycleListenerRegistry) {
+            return (TransactionLifecycleListenerRegistry) tm;
+        }
+
+        throw new TransactionLifecycleListenerRegistryUnavailableException();
     }
 }

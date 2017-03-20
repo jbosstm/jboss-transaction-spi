@@ -21,9 +21,14 @@
  */
 package org.jboss.tm.listener;
 
+import org.jboss.tm.listener.event.TransactionLifecycleEventType;
+
 /**
+ * @deprecated use {@link TransactionLifecycleEventType}} instead
+ *
  * An indication of an event that effects the current transaction
  */
+@Deprecated
 public enum EventType {
     /**
      * a transaction is associated with the current thread
