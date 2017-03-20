@@ -31,9 +31,13 @@ import org.jboss.tm.TransactionManagerLocator;
 import org.jboss.tm.listener.EventType;
 import org.jboss.tm.listener.TransactionListenerRegistry;
 import org.jboss.tm.listener.TransactionListenerRegistryLocator;
+import org.jboss.tm.listener.event.TransactionLifecycleListenerRegistry;
+import org.jboss.tm.listener.event.TransactionLifecycleListenerRegistryLocator;
+import org.jboss.tm.listener.event.TransactionLifecycleListenerRegistryUnavailableException;
 import org.jboss.tm.usertx.client.ServerVMClientUserTransaction;
 import org.junit.After;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.naming.InitialContext;
@@ -100,6 +104,14 @@ public class SPIUnitTest {
         } catch (SystemException ignore) {
         } catch (Error ignore) {
         }
+    }
+
+    @Test
+    @Ignore("This will not pass until com.arjuna.ats.jbossatx.BaseTransactionManagerDelegate implements TransactionLifecycleListenerRegistry")
+    public void testLocateRegistry() throws TransactionLifecycleListenerRegistryUnavailableException {
+        TransactionLifecycleListenerRegistry registry = TransactionLifecycleListenerRegistryLocator.getTransactionListenerRegistry();
+
+        assertNotNull("Unable to locate TransactionLifecycleListenerRegistry", registry);
     }
 
     @Test

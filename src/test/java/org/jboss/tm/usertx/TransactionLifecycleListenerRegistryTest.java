@@ -23,108 +23,117 @@ package org.jboss.tm.usertx;
 
 import com.arjuna.ats.internal.jta.transaction.arjunacore.TransactionSynchronizationRegistryImple;
 import com.arjuna.ats.jbossatx.jta.TransactionManagerDelegate;
-import org.jboss.tm.listener.*;
+
+import org.jboss.tm.listener.event.AssociationLifecycleEventType;
+import org.jboss.tm.listener.event.TransactionLifecycleListener;
+import org.jboss.tm.listener.event.TransactionLifecycleListenerRegistry;
+import org.jboss.tm.listener.event.TransactionLifecycleListenerRegistryLocator;
+import org.jboss.tm.listener.event.TransactionLifecycleListenerRegistryUnavailableException;
+import org.jboss.tm.listener.event.TransactionLifecycleTypeNotSupported;
 import org.jboss.tm.usertx.client.ServerVMClientUserTransaction;
 import org.junit.Test;
 
-import javax.transaction.*;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.InvalidTransactionException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.Status;
+import javax.transaction.SystemException;
+import javax.transaction.Transaction;
+import javax.transaction.TransactionManager;
+import javax.transaction.TransactionSynchronizationRegistry;
 import java.util.EnumSet;
-import java.util.Iterator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-public class TransactionListenerRegistryTest {
+public class TransactionLifecycleListenerRegistryTest {
     private enum CompletionType {
         CMT,
         BMTCOMMIT,
         BMTROLLBACK,
         CMTSUSPEND
-    };
-  
+    }
+
     @Test
     public void testResume() throws SystemException, InvalidTransactionException {
         TransactionManager tm = new TransactionManagerDelegate();
         tm.resume(null); // JBTM-2385 used to cause an NPE 
     }
 
-    private EnumSet<EventType> runTxn(TransactionManager tm) throws SystemException, TransactionTypeNotSupported, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
+    private EnumSet<AssociationLifecycleEventType> runTxn(TransactionManager tm) throws SystemException, TransactionLifecycleTypeNotSupported, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
         ServerVMClientUserTransaction userTransaction = new ServerVMClientUserTransaction(tm);
-        TransactionListenerRegistry listenerRegistration = (TransactionListenerRegistry) tm;
-        final EnumSet<EventType> log = EnumSet.noneOf(EventType.class);
+        TransactionLifecycleListenerRegistry listenerRegistration = (TransactionLifecycleListenerRegistry) tm;
+        final EnumSet<AssociationLifecycleEventType> log = EnumSet.noneOf(AssociationLifecycleEventType.class);
 
-        TransactionListener listener = new TransactionListener() {
-            @Override
-            public void onEvent(TransactionEvent transactionEvent) {
-                Iterator<EventType> events = transactionEvent.getTypes().iterator();
+        TransactionLifecycleListener<AssociationLifecycleEventType> listener = transactionEvent -> {
+            log.add((AssociationLifecycleEventType) transactionEvent.getReason());
 
-                while (events.hasNext()) {
-                    EventType e = events.next();
-
-                    log.add(e);
-                    System.out.printf("TransactionEvent: %s%n", e);
-                }
-            }
+            System.out.printf("TransactionEvent: %s%n", transactionEvent.getReason());
         };
 
         tm.suspend(); // clean the thread
 
         userTransaction.begin();
-        listenerRegistration.addListener(tm.getTransaction(), listener, EnumSet.allOf(EventType.class));
+        listenerRegistration.addListener(tm.getTransaction(), listener, EnumSet.allOf(AssociationLifecycleEventType.class));
         userTransaction.commit();
 
         return log;
     }
 
     @Test
-    public void testIllegalCommit() throws SystemException, TransactionTypeNotSupported, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
-        TransactionManager tm = new TransactionManagerDelegate();
+    public void testIllegalCommit() throws SystemException, TransactionLifecycleTypeNotSupported, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
+        TransactionManager tm = new TMDelegate();
 
         runTxn(tm);
 
         try {
             tm.commit();
             fail("Commit finished transaction should have failed");
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException ignore) {
         }
     }
 
     @Test
-    public void testIllegalRollback() throws SystemException, TransactionTypeNotSupported, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
-        TransactionManager tm = new TransactionManagerDelegate();
+    public void testIllegalRollback() throws SystemException, TransactionLifecycleTypeNotSupported, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
+        TransactionManager tm = new TMDelegate();
 
         runTxn(tm);
 
         try {
             tm.rollback();
             fail("Rollback finished transaction should have failed");
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException ignore) {
         }
     }
 
     @Test
-    public void testLifecycle() throws SystemException, TransactionTypeNotSupported, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
-        TransactionManager tm = new TransactionManagerDelegate();
-        EnumSet<EventType> log = runTxn(tm);
+    public void testLifecycle() throws SystemException, TransactionLifecycleTypeNotSupported, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
+        TransactionManager tm = new TMDelegate();
+        EnumSet<AssociationLifecycleEventType> log = runTxn(tm);
 
-        assertTrue(log.containsAll(EnumSet.of(EventType.ASSOCIATED, EventType.DISASSOCIATING)));
+        assertTrue(log.containsAll(EnumSet.of(AssociationLifecycleEventType.ASSOCIATED, AssociationLifecycleEventType.DISASSOCIATING)));
     }
 
     @Test
-    public void test() throws SystemException, NotSupportedException, RollbackException, TransactionTypeNotSupported, InterruptedException, InvalidTransactionException, HeuristicRollbackException, HeuristicMixedException {
+    public void test() throws SystemException, NotSupportedException, RollbackException, TransactionLifecycleTypeNotSupported, InterruptedException, InvalidTransactionException, HeuristicRollbackException, HeuristicMixedException {
 
-        TransactionManager tm = new TransactionManagerDelegate();
+        TransactionManager tm = new TMDelegate();
         ServerVMClientUserTransaction userTransaction = new ServerVMClientUserTransaction(tm);
 
         userTransaction.setTransactionTimeout(1);
 
        for (CompletionType completionType : CompletionType.values()) {
-            TransactionListenerRegistry listenerRegistration = (TransactionListenerRegistry) tm;
+            TransactionLifecycleListenerRegistry listenerRegistration = (TransactionLifecycleListenerRegistry) tm;
 
             userTransaction.begin();
 
             // The TSR for interposed synchronizations
             final TransactionSynchronizationRegistry tsr = new TransactionSynchronizationRegistryImple();
-            final TxListener listener = new TxListener(listenerRegistration);
+            final TxLifecycleListener listener = new TxLifecycleListener(listenerRegistration);
 
             if (completionType != CompletionType.CMTSUSPEND) {
                 tsr.registerInterposedSynchronization(listener);
@@ -132,7 +141,7 @@ public class TransactionListenerRegistryTest {
                 tm.getTransaction().registerSynchronization(listener);
             }
 
-            listenerRegistration.addListener(tm.getTransaction(), listener, EnumSet.allOf(EventType.class));
+            listenerRegistration.addListener(tm.getTransaction(), listener, EnumSet.allOf(AssociationLifecycleEventType.class));
 
             if (completionType == CompletionType.CMTSUSPEND) {
                 Transaction suspended = tm.suspend();
@@ -155,8 +164,8 @@ public class TransactionListenerRegistryTest {
             if (completionType == CompletionType.BMTCOMMIT) {
                 try {
                     userTransaction.commit();
-                    fail("Should not have been able to commit");
-                } catch (RollbackException e) {
+                    fail("Should not have been able to commit for completion type " + completionType);
+                } catch (RollbackException ignore) {
                 }
             } else if (completionType == CompletionType.BMTROLLBACK) {
                 userTransaction.rollback();
@@ -171,11 +180,12 @@ public class TransactionListenerRegistryTest {
 
             assertTrue(listener.singleCallAC());
             if (completionType == CompletionType.CMTSUSPEND) {
-                assertFalse(listener.shouldDisassoc());
+                assertFalse("should not have disassociated for completion type " + completionType, listener.shouldDisassoc());
             } else {
-                assertTrue(listener.shouldDisassoc());
+                assertTrue("should have disassociated for completion type " + completionType, listener.shouldDisassoc());
             }
-            assertTrue(listener.isClosed());
+
+            assertTrue("txn should have closed for completion type " + completionType, listener.isClosed());
         }
     }
 }

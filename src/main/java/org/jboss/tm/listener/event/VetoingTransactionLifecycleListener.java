@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2015, Red Hat, Inc., and individual contributors
+ * Copyright 2017, Red Hat, Inc., and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -19,19 +19,18 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tm.listener;
+package org.jboss.tm.listener.event;
 
 /**
- * @deprecated use {@link org.jboss.tm.listener.event.TransactionLifecycleTypeNotSupported}
- *
- * An exception type to indicate that the actual transaction type passed into
- * {@link TransactionListenerRegistry#addListener(javax.transaction.Transaction, TransactionListener, java.util.EnumSet)}
- * does not support TSR resources
- * (see {@link javax.transaction.TransactionSynchronizationRegistry#putResource(Object, Object)})
+ * A listener that can veto changes
+ * @param <E> the type of event that the listener wishes to receive
  */
-@Deprecated
-public class TransactionTypeNotSupported extends Exception {
-    public TransactionTypeNotSupported(String message) {
-        super(message);
-    }
+public interface VetoingTransactionLifecycleListener<E extends Enum<E>> {
+    /**
+     * A listener callback for notifying the issuer of the event that the action should not proceed.
+     *
+     * @param transactionLifecycleEvent the type of change that is about to occur
+     * @return true if the caller should cancel the change that the event is signalling
+     */
+    boolean onVetoableEvent(TransactionLifecycleEvent<E> transactionLifecycleEvent);
 }

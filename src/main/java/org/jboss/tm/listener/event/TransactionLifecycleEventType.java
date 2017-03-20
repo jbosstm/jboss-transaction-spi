@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2015, Red Hat, Inc., and individual contributors
+ * Copyright 2017, Red Hat, Inc., and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -19,19 +19,15 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tm.listener;
+package org.jboss.tm.listener.event;
+
+import java.util.EnumSet;
 
 /**
- * @deprecated use {@link org.jboss.tm.listener.event.TransactionLifecycleTypeNotSupported}
+ * A mechanism for providing extensible enum types.
  *
- * An exception type to indicate that the actual transaction type passed into
- * {@link TransactionListenerRegistry#addListener(javax.transaction.Transaction, TransactionListener, java.util.EnumSet)}
- * does not support TSR resources
- * (see {@link javax.transaction.TransactionSynchronizationRegistry#putResource(Object, Object)})
+ * @param <E> the Enum type of the implementing class - ie the implementation will have all of the methods of
+ *           Enum<E>
  */
-@Deprecated
-public class TransactionTypeNotSupported extends Exception {
-    public TransactionTypeNotSupported(String message) {
-        super(message);
-    }
+public interface TransactionLifecycleEventType<E extends Enum<E>> {
 }

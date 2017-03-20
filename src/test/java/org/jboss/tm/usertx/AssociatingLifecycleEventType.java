@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2015, Red Hat, Inc., and individual contributors
+ * Copyright 2017, Red Hat, Inc., and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -19,19 +19,16 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tm.listener;
+package org.jboss.tm.usertx;
+
+import org.jboss.tm.listener.event.TransactionLifecycleEventType;
 
 /**
- * @deprecated use {@link org.jboss.tm.listener.event.TransactionLifecycleTypeNotSupported}
- *
- * An exception type to indicate that the actual transaction type passed into
- * {@link TransactionListenerRegistry#addListener(javax.transaction.Transaction, TransactionListener, java.util.EnumSet)}
- * does not support TSR resources
- * (see {@link javax.transaction.TransactionSynchronizationRegistry#putResource(Object, Object)})
+ * An indication of an event that effects the current transaction
  */
-@Deprecated
-public class TransactionTypeNotSupported extends Exception {
-    public TransactionTypeNotSupported(String message) {
-        super(message);
-    }
+public enum AssociatingLifecycleEventType implements TransactionLifecycleEventType<AssociatingLifecycleEventType> {
+    /**
+     * a transaction is about to be associated with the current thread
+     */
+    ASSOCIATING,
 }

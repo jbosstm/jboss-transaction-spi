@@ -19,19 +19,39 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tm.listener;
+package org.jboss.tm.listener.event;
+
+import javax.transaction.Transaction;
 
 /**
- * @deprecated use {@link org.jboss.tm.listener.event.TransactionLifecycleTypeNotSupported}
+ * Details of a change in the disposition of an transaction that is passed to registered
+ * listeners ({@link TransactionLifecycleListener#onTransactionEvent(TransactionLifecycleEvent)}
  *
- * An exception type to indicate that the actual transaction type passed into
- * {@link TransactionListenerRegistry#addListener(javax.transaction.Transaction, TransactionListener, java.util.EnumSet)}
- * does not support TSR resources
- * (see {@link javax.transaction.TransactionSynchronizationRegistry#putResource(Object, Object)})
+ * @param <E> the type of event that the transaction relates to
  */
-@Deprecated
-public class TransactionTypeNotSupported extends Exception {
-    public TransactionTypeNotSupported(String message) {
-        super(message);
+public class TransactionLifecycleEvent<E extends Enum<E>> {
+    private Transaction transaction;
+    private TransactionLifecycleEventType<E> reason;
+
+    public TransactionLifecycleEvent(Transaction transaction, TransactionLifecycleEventType<E> reason) {
+        this.transaction = transaction;
+        this.reason = reason;
+    }
+
+    /**
+     *
+     * @return the transaction that the event relates to
+     */
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    /**
+     * The reason that this event was created
+     *
+     * @return an indication of what kind of change has occurred
+     */
+    public TransactionLifecycleEventType<E> getReason() {
+        return reason;
     }
 }

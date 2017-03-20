@@ -22,8 +22,11 @@
 package org.jboss.tm.listener;
 
 /**
+ * @deprecated use {@link org.jboss.tm.listener.event.TransactionLifecycleListener}
+ *
  * A listener callback for transaction related events
  */
+@Deprecated
 public interface TransactionListener {
     /**
      * The callback for notifying registered listeners of a transaction related event. Use

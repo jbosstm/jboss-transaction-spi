@@ -24,6 +24,10 @@ package org.jboss.tm.listener;
 import javax.transaction.Transaction;
 import java.util.EnumSet;
 
+/**
+ * @deprecated use {@link org.jboss.tm.listener.event.TransactionLifecycleEvent}
+ */
+@Deprecated
 public class TransactionEvent {
     private Transaction transaction;
     private EnumSet<EventType> types;

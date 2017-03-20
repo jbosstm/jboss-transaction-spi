@@ -19,19 +19,17 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tm.listener;
+package org.jboss.tm.listener.event;
 
 /**
- * @deprecated use {@link org.jboss.tm.listener.event.TransactionLifecycleTypeNotSupported}
- *
- * An exception type to indicate that the actual transaction type passed into
- * {@link TransactionListenerRegistry#addListener(javax.transaction.Transaction, TransactionListener, java.util.EnumSet)}
- * does not support TSR resources
- * (see {@link javax.transaction.TransactionSynchronizationRegistry#putResource(Object, Object)})
+ * An exception type thrown by {@link org.jboss.tm.listener.event.TransactionLifecycleListenerRegistryLocator} if the registry
+ * is unavailable
  */
-@Deprecated
-public class TransactionTypeNotSupported extends Exception {
-    public TransactionTypeNotSupported(String message) {
+public class TransactionLifecycleListenerRegistryUnavailableException extends Exception {
+    public TransactionLifecycleListenerRegistryUnavailableException(String message) {
         super(message);
+    }
+
+    public TransactionLifecycleListenerRegistryUnavailableException() {
     }
 }
