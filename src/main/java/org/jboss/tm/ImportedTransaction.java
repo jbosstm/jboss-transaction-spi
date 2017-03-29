@@ -20,6 +20,8 @@
  */
 package org.jboss.tm;
 
+import java.util.List;
+
 import javax.transaction.HeuristicCommitException;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -115,4 +117,41 @@ public interface ImportedTransaction extends Transaction
      * @return an opaque id
      */
     public Object getId();
+
+    /**
+     * <p>
+     * Listing deferred throwables gathered during the transaction processing.
+     * This list contains exceptions thrown by transaction resources when an error
+     * occurs.
+     * <p>
+     * Depending on the transaction stage the particular method returns only an error code e.g. {@link #doPrepare()}
+     * then the controller of the subordinate transaction throws its own exception and it could
+     * pack these throwables in some details.
+     * Other methods as {@link #doCommit()} throws an exception but those exception does not contain
+     * underlying exceptions like those coming from resource failures.
+     * <p>
+     * Normally exceptions taken by this call are put under suppressed part of the thrown exception.
+     *
+     * <p>
+     * JTS implementation of the {@link SubordinateTransaction} interface does not support the deferred throwable
+     * based on the limitation of ORB protocol. This method called on JTS implementation causes {@link UnsupportedOperationException}
+     * being thrown.
+     *
+     * @return list of throwables causing the failure state of the transaction
+     * @throws UnsupportedOperationException for JTS implementation
+     */
+    public List<Throwable> getDeferredThrowables();
+
+    /**
+     * <p>
+     * Informs if deferred throwables are supported by implementation. See {@link #getDeferredThrowables()}.
+     * <ul>
+     *   <li>JTS does not support deffered throwable, you can expect false.</li>
+     *   <li>JTA suppors deffered throwable, you can expect true.</li>
+     * </ul>
+     *
+     * @return true, if getting deffered throwables is supported by subordinate transaction implementation,
+     *   false otherwise
+     */
+    public boolean supportsDeferredThrowables();
 }
