@@ -85,7 +85,7 @@
     <version.org.jboss.logging.jboss-logging-processor>1.1.0.Final</version.org.jboss.logging.jboss-logging-processor>
     <version.org.jboss.spec.javax.transaction>1.0.0.Alpha3</version.org.jboss.spec.javax.transaction>
     <version.org.jboss.spec.javax.resource.jboss-connector-api_1.7_spec>1.0.0.Final</version.org.jboss.spec.javax.resource.jboss-connector-api_1.7_spec>
-    <version.junit>4.11</version.junit>
+    <version.junit>4.13.1</version.junit>
     <version.narayana>5.3.4.Final</version.narayana>
   </properties>
 
