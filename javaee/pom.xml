@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-transaction-spi-parent</artifactId>
-    <version>7.6.1.Final-SNAPSHOT</version>
+    <version>7.6.1.Final</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
