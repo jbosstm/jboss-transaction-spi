@@ -15,10 +15,13 @@
   <url>http://www.jboss.org</url>
   <description>The Java Transaction SPI classes Parent</description>
 
-  <scm>
-    <connection>scm:git:${jboss.as.scm.connection}</connection>
-    <developerConnection>scm:git:${narayana.spi.scm.connection}</developerConnection>
-    <url>${narayana.spi.scm.url}</url>
+  <scm child.scm.connection.inherit.append.path="false"
+       child.scm.developerConnection.inherit.append.path="false"
+       child.scm.url.inherit.append.path="false">
+    <url>https://github.com/jbosstm/jboss-transaction-spi</url>
+    <connection>scm:git:git@github.com:jbosstm/jboss-transaction-spi.git</connection>
+    <developerConnection>scm:git:git@github.com:jbosstm/jboss-transaction-spi.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
 
   <pluginRepositories>

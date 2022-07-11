@@ -17,8 +17,6 @@
   <properties>
     <!-- The base directory for the maven release plugin to create the tag -->
     <tagBase>https://svn.jboss.org/repos/jbossas/projects/integration/tags/</tagBase>
-    <narayana.spi.scm.url>https://github.com/jbosstm/jboss-transaction-spi</narayana.spi.scm.url>
-    <narayana.spi.scm.connection>scm:git:git@github.com:jbosstm/jboss-transaction-spi.git</narayana.spi.scm.connection>
     <version.org.jboss.logging.jboss-logging>3.1.4.GA</version.org.jboss.logging.jboss-logging>
     <version.org.jboss.logging.jboss-logging-processor>1.1.0.Final</version.org.jboss.logging.jboss-logging-processor>
     <version.org.jboss.spec.javax.transaction>1.0.0.Alpha3</version.org.jboss.spec.javax.transaction>
