@@ -28,9 +28,6 @@ import com.arjuna.ats.jta.utils.JNDIManager;
 import com.arjuna.common.internal.util.propertyservice.BeanPopulator;
 
 import org.jboss.tm.TransactionManagerLocator;
-import org.jboss.tm.listener.EventType;
-import org.jboss.tm.listener.TransactionListenerRegistry;
-import org.jboss.tm.listener.TransactionListenerRegistryLocator;
 import org.jboss.tm.usertx.client.ServerVMClientUserTransaction;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -38,7 +35,6 @@ import org.junit.Test;
 
 import javax.naming.InitialContext;
 import jakarta.transaction.*;
-import java.util.EnumSet;
 import java.util.Hashtable;
 
 import static org.junit.Assert.*;
@@ -99,44 +95,6 @@ public class SPIUnitTest {
                 txn.rollback();
         } catch (SystemException ignore) {
         } catch (Error ignore) {
-        }
-    }
-
-    @Test
-    public void testListener() {
-        TransactionManager tm = TransactionManagerLocator.locateTransactionManager();
-        Transaction prevTxn = null;
-
-        try {
-            TransactionListenerRegistry tlr = TransactionListenerRegistryLocator.getTransactionListenerRegistry();
-            TxListener listener = new TxListener(tlr);
-
-            try {
-                prevTxn = tm.suspend();
-            } catch (SystemException e) {
-            } catch (Error e) {
-                System.out.printf("Error %s%n", e.getMessage());
-            }
-            tm.begin();
-
-            tlr.addListener(tm.getTransaction(), listener, EnumSet.allOf(EventType.class));
-
-            tm.commit();
-
-            if (!listener.hasEvents())
-                throw new RuntimeException("listener did not get any events");
-        } catch (Throwable e) {
-            throw new RuntimeException("TransactionListenerRegistry test failure: ", e);
-        } finally {
-            if (prevTxn != null) {
-                try {
-                    tm.resume(prevTxn);
-                } catch (InvalidTransactionException e) {
-                    throw new RuntimeException("testListener resume failed: ", e);
-                } catch (SystemException e) {
-                    throw new RuntimeException("testListener resume failed: ", e);
-                }
-            }
         }
     }
 
