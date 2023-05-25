@@ -14,6 +14,14 @@
   <url>http://www.jboss.org</url>
   <description>The Java Transaction SPI classes</description>
 
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License v2.1 or later</name>
+      <url>https://repository.jboss.org/licenses/lgpl-2.1.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
   <properties>
     <!-- The base directory for the maven release plugin to create the tag -->
     <tagBase>https://svn.jboss.org/repos/jbossas/projects/integration/tags/</tagBase>
