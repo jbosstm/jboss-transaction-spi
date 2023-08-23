@@ -25,14 +25,7 @@
   <properties>
     <!-- The base directory for the maven release plugin to create the tag -->
     <tagBase>https://svn.jboss.org/repos/jbossas/projects/integration/tags/</tagBase>
-    <version.junit>[4.13.1,)</version.junit>
-    <version.narayana>6.0.0.Final</version.narayana>
-
-    <version.jnpserver>5.0.3.GA</version.jnpserver>
-    <version.org.jboss.logging.jboss-logging>3.5.0.Final</version.org.jboss.logging.jboss-logging>
-    <version.org.jboss.logging.jboss-logging-processor>2.2.1.Final</version.org.jboss.logging.jboss-logging-processor>
-    <version.jakarta.transaction.jakarta.transaction-api>2.0.1</version.jakarta.transaction.jakarta.transaction-api>
-    <version.jakarta.resource.jakarta.resource-api>2.0.0</version.jakarta.resource.jakarta.resource-api>
+    <version.narayana>7.0.0.Final</version.narayana>
   </properties>
 
   <repositories>
@@ -74,36 +67,48 @@
       </plugin>
     </plugins>
   </build>
-  
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jboss.narayana</groupId>
+        <artifactId>narayana-bom</artifactId>
+        <version>${version.narayana}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.narayana</groupId>
+        <artifactId>narayana-bom-test</artifactId>
+        <version>${version.narayana}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.jboss.logging</groupId>
       <artifactId>jboss-logging</artifactId>
-      <version>${version.org.jboss.logging.jboss-logging}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.jboss.logging</groupId>
       <artifactId>jboss-logging-processor</artifactId>
-      <version>${version.org.jboss.logging.jboss-logging-processor}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>jakarta.resource</groupId>
       <artifactId>jakarta.resource-api</artifactId>
-      <version>${version.jakarta.resource.jakarta.resource-api}</version>
     </dependency>
     <dependency>
       <groupId>jakarta.transaction</groupId>
       <artifactId>jakarta.transaction-api</artifactId>
-      <version>${version.jakarta.transaction.jakarta.transaction-api}</version>
     </dependency>
 
     <!-- test dependencies -->
     <dependency>
       <groupId>org.jboss.narayana.jta</groupId>
       <artifactId>narayana-jta</artifactId>
-      <version>${version.narayana}</version>
       <scope>test</scope>
     </dependency>
 
@@ -111,20 +116,17 @@
     <dependency>
       <groupId>org.jboss.narayana.jts</groupId>
       <artifactId>narayana-jts-integration</artifactId>
-      <version>${version.narayana}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jboss.naming</groupId>
       <artifactId>jnpserver</artifactId>
-      <version>${version.jnpserver}</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
