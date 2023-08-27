@@ -26,6 +26,10 @@
     <!-- The base directory for the maven release plugin to create the tag -->
     <tagBase>https://svn.jboss.org/repos/jbossas/projects/integration/tags/</tagBase>
     <version.narayana>7.0.0.Final</version.narayana>
+    <sortpom.skip>true</sortpom.skip>
+    <checkstyle.skip>true</checkstyle.skip>
+    <version.io.narayana.checkstyle-config>1.0.1.Final</version.io.narayana.checkstyle-config>
+    <version.sortpom>3.0.0</version.sortpom>
   </properties>
 
   <repositories>
@@ -64,6 +68,54 @@
           <nexusUrl>https://repository.jboss.org/nexus/</nexusUrl>
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <configLocation>narayana-checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>narayana-checkstyle/suppressions.xml</suppressionsLocation>
+          <consoleOutput>true</consoleOutput>
+          <failsOnError>true</failsOnError>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <excludes>**/*$logger.java,**/*$bundle.java</excludes>
+          <useFile></useFile>
+          <!-- checkstyle is set to be run on particular modules by disabling skip -->
+          <skip>${checkstyle.skip}</skip>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>io.narayana</groupId>
+            <artifactId>narayana-checkstyle-config</artifactId>
+            <version>${version.io.narayana.checkstyle-config}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>check-style</id>
+            <goals>
+              <goal>checkstyle</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.ekryd.sortpom</groupId>
+        <artifactId>sortpom-maven-plugin</artifactId>
+        <configuration>
+          <skip>${sortpom.skip}</skip>
+          <createBackupFile>false</createBackupFile>
+          <sortProperties>true</sortProperties>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>sort</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
