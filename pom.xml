@@ -29,12 +29,22 @@
     <checkstyle.skip>true</checkstyle.skip>
     <version.io.narayana.checkstyle-config>1.0.1.Final</version.io.narayana.checkstyle-config>
     <version.sortpom>3.0.0</version.sortpom>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.org.jboss.logging.jboss-logging>3.5.3.Final</version.org.jboss.logging.jboss-logging>
     <version.jakarta.resource.jakarta-resource-api>2.1.0</version.jakarta.resource.jakarta-resource-api>
     <version.jakarta.transaction.jakarta-transaction-api>2.0.1</version.jakarta.transaction.jakarta-transaction-api>
+
+    <!-- Release pipeline (JBTM-3997 / JBTM-3998) -->
+    <skip.maven-deploy-plugin>false</skip.maven-deploy-plugin>
+    <version.javadoc.plugin>3.5.0</version.javadoc.plugin>
+    <version.org.sonatype.plugins.nxrm3.plugin>1.0.7</version.org.sonatype.plugins.nxrm3.plugin>
+    <nexus.repository.release>narayana</nexus.repository.release>
+    <nexus.repository.staging>narayana-staging</nexus.repository.staging>
+    <nexus.repository.url>https://repository.jboss.org/nexus/</nexus.repository.url>
+    <nexus.serverId>jboss-releases-repository</nexus.serverId>
+    <nexus.staging.tag>jboss-transaction-spi-${project.version}</nexus.staging.tag>
   </properties>
 
   <repositories>
@@ -56,23 +66,42 @@
   </repositories>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nxrm3-maven-plugin</artifactId>
+          <version>${version.org.sonatype.plugins.nxrm3.plugin}</version>
+          <configuration>
+            <serverId>${nexus.serverId}</serverId>
+            <nexusUrl>${nexus.repository.url}</nexusUrl>
+            <repository>${nexus.repository.staging}</repository>
+            <tag>${nexus.staging.tag}</tag>
+            <sourceRepository>${nexus.repository.staging}</sourceRepository>
+            <destinationRepository>${nexus.repository.release}</destinationRepository>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
         <configuration>
-          <skip>true</skip>
+          <skip>${skip.maven-deploy-plugin}</skip>
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <serverId>jboss-releases-repository</serverId>
-          <nexusUrl>https://repository.jboss.org/nexus/</nexusUrl>
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -142,5 +171,87 @@
       <version>${version.jakarta.transaction.jakarta-transaction-api}</version>
     </dependency>
   </dependencies>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>jboss-snapshots-repository</id>
+      <name>JBoss Snapshot Repository</name>
+      <url>https://repository.jboss.org/nexus/repository/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>release</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>${version.javadoc.plugin}</version>
+            <configuration>
+              <release>17</release>
+              <detectOfflineLinks>false</detectOfflineLinks>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <skip.maven-deploy-plugin>true</skip.maven-deploy-plugin>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>nexusStagingDeployment</id>
+      <activation>
+        <property>
+          <name>releaseStaging</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nxrm3-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>nexus-staging-deploy</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>staging-deploy</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
