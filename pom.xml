@@ -1,19 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
     <version>39</version>
-    <relativePath />
+    <relativePath></relativePath>
   </parent>
-
-  <modelVersion>4.0.0</modelVersion>
   <groupId>org.jboss</groupId>
   <artifactId>jboss-transaction-spi</artifactId>
   <version>8.0.1.Final-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>JBoss Transaction SPI</name>
-  <url>https://github.com/jbosstm/jboss-transaction-spi</url>
   <description>The Java Transaction SPI classes</description>
+  <url>https://github.com/jbosstm/jboss-transaction-spi</url>
 
   <licenses>
     <license>
@@ -31,31 +32,56 @@
     <system>GitHub Issues</system>
     <url>https://github.com/jbosstm/jboss-transaction-spi/issues</url>
   </issueManagement>
-  
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>jboss-snapshots-repository</id>
+      <name>JBoss Snapshot Repository</name>
+      <url>https://repository.jboss.org/nexus/repository/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <properties>
-    <!-- The base directory for the maven release plugin to create the tag -->
-    <tagBase>https://svn.jboss.org/repos/jbossas/projects/integration/tags/</tagBase>
-    <sortpom.skip>true</sortpom.skip>
     <checkstyle.skip>true</checkstyle.skip>
-    <version.io.narayana.checkstyle-config>1.0.1.Final</version.io.narayana.checkstyle-config>
-    <version.sortpom>3.0.0</version.sortpom>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.org.jboss.logging.jboss-logging>3.5.3.Final</version.org.jboss.logging.jboss-logging>
-    <version.jakarta.resource.jakarta-resource-api>2.1.0</version.jakarta.resource.jakarta-resource-api>
-    <version.jakarta.transaction.jakarta-transaction-api>2.0.1</version.jakarta.transaction.jakarta-transaction-api>
-
-    <!-- Release pipeline (JBTM-3997 / JBTM-3998) -->
-    <skip.maven-deploy-plugin>false</skip.maven-deploy-plugin>
-    <version.javadoc.plugin>3.5.0</version.javadoc.plugin>
-    <version.org.sonatype.plugins.nxrm3.plugin>1.0.7</version.org.sonatype.plugins.nxrm3.plugin>
     <nexus.repository.release>narayana</nexus.repository.release>
     <nexus.repository.staging>narayana-staging</nexus.repository.staging>
     <nexus.repository.url>https://repository.jboss.org/nexus/</nexus.repository.url>
     <nexus.serverId>jboss-releases-repository</nexus.serverId>
     <nexus.staging.tag>jboss-transaction-spi-${project.version}</nexus.staging.tag>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Release pipeline (JBTM-3997 / JBTM-3998) -->
+    <skip.maven-deploy-plugin>false</skip.maven-deploy-plugin>
+    <!-- The base directory for the maven release plugin to create the tag -->
+    <tagBase>https://svn.jboss.org/repos/jbossas/projects/integration/tags/</tagBase>
+    <version.io.narayana.checkstyle-config>1.0.1.Final</version.io.narayana.checkstyle-config>
+    <version.jakarta.resource.jakarta-resource-api>2.1.0</version.jakarta.resource.jakarta-resource-api>
+    <version.jakarta.transaction.jakarta-transaction-api>2.0.1</version.jakarta.transaction.jakarta-transaction-api>
+    <version.javadoc.plugin>3.5.0</version.javadoc.plugin>
+    <version.org.jboss.logging.jboss-logging>3.5.3.Final</version.org.jboss.logging.jboss-logging>
+    <version.org.sonatype.plugins.nxrm3.plugin>1.0.7</version.org.sonatype.plugins.nxrm3.plugin>
+    <version.sortpom>3.0.0</version.sortpom>
   </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.jboss.logging</groupId>
+      <artifactId>jboss-logging</artifactId>
+      <version>${version.org.jboss.logging.jboss-logging}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.resource</groupId>
+      <artifactId>jakarta.resource-api</artifactId>
+      <version>${version.jakarta.resource.jakarta-resource-api}</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.transaction</groupId>
+      <artifactId>jakarta.transaction-api</artifactId>
+      <version>${version.jakarta.transaction.jakarta-transaction-api}</version>
+    </dependency>
+  </dependencies>
 
   <repositories>
     <repository>
@@ -148,7 +174,6 @@
         <groupId>com.github.ekryd.sortpom</groupId>
         <artifactId>sortpom-maven-plugin</artifactId>
         <configuration>
-          <skip>${sortpom.skip}</skip>
           <createBackupFile>false</createBackupFile>
           <sortProperties>true</sortProperties>
         </configuration>
@@ -163,32 +188,6 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>org.jboss.logging</groupId>
-      <artifactId>jboss-logging</artifactId>
-      <version>${version.org.jboss.logging.jboss-logging}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>jakarta.resource</groupId>
-      <artifactId>jakarta.resource-api</artifactId>
-      <version>${version.jakarta.resource.jakarta-resource-api}</version>
-    </dependency>
-    <dependency>
-      <groupId>jakarta.transaction</groupId>
-      <artifactId>jakarta.transaction-api</artifactId>
-      <version>${version.jakarta.transaction.jakarta-transaction-api}</version>
-    </dependency>
-  </dependencies>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>jboss-snapshots-repository</id>
-      <name>JBoss Snapshot Repository</name>
-      <url>https://repository.jboss.org/nexus/repository/snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
 
   <profiles>
     <profile>
@@ -198,6 +197,9 @@
           <name>release</name>
         </property>
       </activation>
+      <properties>
+        <skip.maven-deploy-plugin>true</skip.maven-deploy-plugin>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -223,18 +225,15 @@
             <executions>
               <execution>
                 <id>sign-artifacts</id>
-                <phase>verify</phase>
                 <goals>
                   <goal>sign</goal>
                 </goals>
+                <phase>verify</phase>
               </execution>
             </executions>
           </plugin>
         </plugins>
       </build>
-      <properties>
-        <skip.maven-deploy-plugin>true</skip.maven-deploy-plugin>
-      </properties>
     </profile>
 
     <profile>
@@ -252,10 +251,10 @@
             <executions>
               <execution>
                 <id>nexus-staging-deploy</id>
-                <phase>deploy</phase>
                 <goals>
                   <goal>staging-deploy</goal>
                 </goals>
+                <phase>deploy</phase>
               </execution>
             </executions>
           </plugin>
