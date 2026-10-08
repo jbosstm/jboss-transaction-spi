@@ -7,11 +7,12 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jboss</groupId>
   <artifactId>jboss-transaction-spi</artifactId>
   <version>8.0.1.Final-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>JBoss Transaction SPI</name>
-  <url>http://www.jboss.org</url>
+  <url>https://github.com/jbosstm/jboss-transaction-spi</url>
   <description>The Java Transaction SPI classes</description>
 
   <licenses>
@@ -21,6 +22,15 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <scm>
+    <connection>scm:git:git@github.com:jbosstm/jboss-transaction-spi.git</connection>
+    <developerConnection>scm:git:git@github.com:jbosstm/jboss-transaction-spi.git</developerConnection>
+    <url>https://github.com/jbosstm/jboss-transaction-spi</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/jbosstm/jboss-transaction-spi/issues</url>
+  </issueManagement>
   
   <properties>
     <!-- The base directory for the maven release plugin to create the tag -->
