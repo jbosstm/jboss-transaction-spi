@@ -10,7 +10,7 @@
   </parent>
   <groupId>org.jboss</groupId>
   <artifactId>jboss-transaction-spi</artifactId>
-  <version>9.0.0.Final</version>
+  <version>9.0.1.Final-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>JBoss Transaction SPI</name>
   <description>The Java Transaction SPI classes</description>
